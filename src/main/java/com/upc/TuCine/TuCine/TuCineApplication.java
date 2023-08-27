@@ -1,5 +1,6 @@
 package com.upc.TuCine.TuCine;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -36,8 +37,18 @@ public class TuCineApplication {
 		return new ModelMapper();
 	}
 
-
 	public static void main(String[] args) {
+		// Cargar variables de entorno desde el archivo .env
+        Dotenv dotenv = Dotenv.load();
+
+        // Obtener el valor de la variable de entorno DATASOURCE_PASSWORD
+		String dataSourceUser = dotenv.get("DATASOURCE_USER");
+        String dataSourcePassword = dotenv.get("DATASOURCE_PASSWORD");
+		
+        // Crear propiedades personalizadas para tu aplicación
+        System.setProperty("custom.datasource.user", dataSourceUser);
+		System.setProperty("custom.datasource.password", dataSourcePassword);
+
 		SpringApplication.run(TuCineApplication.class, args);
 	}
 
