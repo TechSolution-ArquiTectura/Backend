@@ -9,6 +9,7 @@ Before you begin, ensure you have an SQL database named `tucine` set up on your 
 1. Add a `.env` file to the project root and configure the following variables:
 
 DATASOURCE_USER = YOUR_USER
+
 DATASOURCE_PASSWORD = YOUR_PASSWORD
 
 Replace `YOUR_USER` and `YOUR_PASSWORD` with your local database username and password.
