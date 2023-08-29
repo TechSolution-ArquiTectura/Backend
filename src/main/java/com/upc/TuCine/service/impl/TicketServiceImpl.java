@@ -1,140 +1,105 @@
 package com.upc.TuCine.service.impl;
 
 import com.upc.TuCine.dto.TicketDto;
-import com.upc.TuCine.model.Promotion;
-import com.upc.TuCine.model.Showtime;
+import com.upc.TuCine.mapping.TicketMapper;
 import com.upc.TuCine.model.Ticket;
-import com.upc.TuCine.repository.FilmRepository;
 import com.upc.TuCine.repository.ShowtimeRepository;
 import com.upc.TuCine.repository.TicketRepository;
 import com.upc.TuCine.service.TicketService;
+import com.upc.TuCine.shared.exception.ResourceNotFoundException;
 import com.upc.TuCine.shared.exception.ResourceValidationException;
+import com.upc.TuCine.user.domain.persistence.UserRepository;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 @Service
 public class TicketServiceImpl implements TicketService {
-
+    private static final String ENTITY = "Employee";
+    private Validator validator;
+    private TicketMapper mapper;
     @Autowired
     private TicketRepository ticketRepository;
-
-    // @Autowired
-    // private CustomerRepository customerRepository;
-
     @Autowired
     private ShowtimeRepository showtimeRepository;
-
     @Autowired
-    private ModelMapper modelMapper;
+    private UserRepository userRepository;
 
-    public TicketServiceImpl() {
-        this.modelMapper = new ModelMapper();
+    public TicketServiceImpl(TicketMapper ticketMapper, Validator validator) {
+        this.mapper = ticketMapper;
+        this.validator = validator;
     }
 
-    private TicketDto EntityToDto(Ticket ticket){
-        return modelMapper.map(ticket, TicketDto.class);
-    }
-
-    private Ticket DtoToEntity(TicketDto ticketDto){
-        return modelMapper.map(ticketDto, Ticket.class);
-    }
     @Override
     public List<TicketDto> getAllTickets() {
-        List<Ticket> tickets = ticketRepository.findAll();
-        return tickets.stream()
-                .map(this::EntityToDto)
-                .collect(Collectors.toList());
+        return mapper.modelListToResource(ticketRepository.findAll());
     }
+
+    @Override
+    public List<TicketDto> getAllTicketsByUserId(Integer userId) {
+        existsUserById(userId);
+        return mapper.modelListToResource(ticketRepository.findByUserId(userId));
+    }
+
     @Override
     public TicketDto createTicket(TicketDto ticketDto) {
+        Ticket ticket = mapper.toModel(ticketDto);
+        Set<ConstraintViolation<Ticket>> violations = validator.validate(ticket);
 
-        validateTicket(ticketDto);
-        // existsCustomerById(ticketDto.getCustomer().getId());
-        existsShowtimeById(ticketDto.getShowtime().getId());
+        if (!violations.isEmpty())
+            throw new ResourceValidationException(ENTITY, violations);
+        existsUserById(ticket.getUser().getId());
+        existsShowtimeById(ticket.getShowtime().getId());
 
-        // Userv customer = customerRepository.findById(ticketDto.getCustomer().getId()).orElse(null);
-        // ticketDto.setCustomer(customer);
-
-        Showtime showtime = showtimeRepository.findById(ticketDto.getShowtime().getId()).orElse(null);
-        ticketDto.setShowtime(showtime);
-
-        Ticket ticket = DtoToEntity(ticketDto);
-        Ticket createdTicket = ticketRepository.save(ticket);
-        return EntityToDto(createdTicket);
+        return mapper.toResource(ticketRepository.save(ticket));
     }
 
     @Override
     public TicketDto updateTicket(Integer id, TicketDto ticketDto) {
-        Ticket ticketToUpdate = ticketRepository.findById(id).orElse(null);
-        if (ticketToUpdate == null) {
-            return null; // O lanzar una excepción si lo prefieres
-        }
+        Ticket ticket = mapper.toModel(ticketDto);
+        Set<ConstraintViolation<Ticket>> violations = validator.validate(ticket);
 
-        validateTicket(ticketDto);
-        // existsCustomerById(ticketDto.getCustomer().getId());
-        existsShowtimeById(ticketDto.getShowtime().getId());
+        if (!violations.isEmpty())
+            throw new ResourceValidationException(ENTITY, violations);
 
+        existsUserById(ticket.getUser().getId());
+        existsShowtimeById(ticket.getShowtime().getId());
 
-        // Userv customer = customerRepository.findById(ticketDto.getCustomer().getId()).orElse(null);
-        // ticketDto.setCustomer(customer);
+        Ticket resourceUpdated = ticketRepository.findById(id)
+                .map(data -> ticketRepository.save(data.withNumberSeats(ticket.getNumberSeats())
+                        .withPaymentToken(ticket.getPaymentToken())
+                        .withTotalPrice(ticket.getTotalPrice())))
+                .orElseThrow(() -> new ResourceNotFoundException(ENTITY, id));
 
-        Showtime showtime = showtimeRepository.findById(ticketDto.getShowtime().getId()).orElse(null);
-        ticketDto.setShowtime(showtime);
-
-
-        // Actualizar los campos del ticket existente
-        // ticketToUpdate.setCustomer(ticketDto.getCustomer());
-        ticketToUpdate.setShowtime(ticketDto.getShowtime());
-        ticketToUpdate.setNumberSeats(ticketDto.getNumberSeats());
-        ticketToUpdate.setTotalPrice(ticketDto.getTotalPrice());
-
-        validateTicket(ticketDto);
-        // existsCustomerById(ticketDto.getCustomer().getId());
-        existsShowtimeById(ticketDto.getShowtime().getId());
-
-        Ticket updatedTicket = ticketRepository.save(ticketToUpdate);
-        return EntityToDto(updatedTicket);
+        return mapper.toResource(resourceUpdated);
     }
 
     @Override
     public TicketDto deleteTicket(Integer id) {
-        Ticket ticketToDelete = ticketRepository.findById(id).orElse(null);
-        if (ticketToDelete == null) {
-            return null; // O lanzar una excepción si lo prefieres
-        }
-        ticketRepository.delete(ticketToDelete);
-        return EntityToDto(ticketToDelete);
+        // Ticket ticketToDelete = ticketRepository.findById(id).orElse(null);
+        // if (ticketToDelete == null) {
+        // return null; // O lanzar una excepción si lo prefieres
+        // }
+        // ticketRepository.delete(ticketToDelete);
+        // return EntityToDto(ticketToDelete);
+        throw new UnsupportedOperationException("Unimplemented method 'getAllTicketsByUser'");
     }
 
-    private void validateTicket(TicketDto ticket) {
-        // if (ticket.getCustomer() == null) {
-        //     throw new ResourceValidationException("Customer id es requerido");
-        // }
-        if (ticket.getShowtime() == null) {
-            throw new ResourceValidationException("Showtime id es requerido");
+    private void existsUserById(Integer id) {
+        if (!userRepository.existsById(id)) {
+            throw new ResourceValidationException("UserId not found");
         }
-        if (ticket.getNumberSeats() == null || ticket.getNumberSeats() == 0) {
-            throw new ResourceValidationException("El numero de asientos debe ser mayor a 0");
-        }
-        if (ticket.getTotalPrice() == null || ticket.getTotalPrice() <= 0) {
-            throw new ResourceValidationException("El precio total es requerido y debe ser mayor a 0");
-        }
-    }
-
-    private void existsCustomerById(Integer id) {
-        // if (!customerRepository.existsById(id)) {
-        //     throw new ResourceValidationException("Customer id not found");
-        // }
     }
 
     private void existsShowtimeById(Integer id) {
         if (!showtimeRepository.existsById(id)) {
-            throw new ResourceValidationException("Showtime id not found");
+            throw new ResourceValidationException("ShowtimeId not found");
         }
     }
 }
