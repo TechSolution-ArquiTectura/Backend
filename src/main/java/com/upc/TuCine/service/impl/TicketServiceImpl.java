@@ -1,11 +1,9 @@
 package com.upc.TuCine.service.impl;
 
 import com.upc.TuCine.dto.TicketDto;
-import com.upc.TuCine.model.Customer;
 import com.upc.TuCine.model.Promotion;
 import com.upc.TuCine.model.Showtime;
 import com.upc.TuCine.model.Ticket;
-import com.upc.TuCine.repository.CustomerRepository;
 import com.upc.TuCine.repository.FilmRepository;
 import com.upc.TuCine.repository.ShowtimeRepository;
 import com.upc.TuCine.repository.TicketRepository;
@@ -25,8 +23,8 @@ public class TicketServiceImpl implements TicketService {
     @Autowired
     private TicketRepository ticketRepository;
 
-    @Autowired
-    private CustomerRepository customerRepository;
+    // @Autowired
+    // private CustomerRepository customerRepository;
 
     @Autowired
     private ShowtimeRepository showtimeRepository;
@@ -56,11 +54,11 @@ public class TicketServiceImpl implements TicketService {
     public TicketDto createTicket(TicketDto ticketDto) {
 
         validateTicket(ticketDto);
-        existsCustomerById(ticketDto.getCustomer().getId());
+        // existsCustomerById(ticketDto.getCustomer().getId());
         existsShowtimeById(ticketDto.getShowtime().getId());
 
-        Customer customer = customerRepository.findById(ticketDto.getCustomer().getId()).orElse(null);
-        ticketDto.setCustomer(customer);
+        // Userv customer = customerRepository.findById(ticketDto.getCustomer().getId()).orElse(null);
+        // ticketDto.setCustomer(customer);
 
         Showtime showtime = showtimeRepository.findById(ticketDto.getShowtime().getId()).orElse(null);
         ticketDto.setShowtime(showtime);
@@ -78,25 +76,25 @@ public class TicketServiceImpl implements TicketService {
         }
 
         validateTicket(ticketDto);
-        existsCustomerById(ticketDto.getCustomer().getId());
+        // existsCustomerById(ticketDto.getCustomer().getId());
         existsShowtimeById(ticketDto.getShowtime().getId());
 
 
-        Customer customer = customerRepository.findById(ticketDto.getCustomer().getId()).orElse(null);
-        ticketDto.setCustomer(customer);
+        // Userv customer = customerRepository.findById(ticketDto.getCustomer().getId()).orElse(null);
+        // ticketDto.setCustomer(customer);
 
         Showtime showtime = showtimeRepository.findById(ticketDto.getShowtime().getId()).orElse(null);
         ticketDto.setShowtime(showtime);
 
 
         // Actualizar los campos del ticket existente
-        ticketToUpdate.setCustomer(ticketDto.getCustomer());
+        // ticketToUpdate.setCustomer(ticketDto.getCustomer());
         ticketToUpdate.setShowtime(ticketDto.getShowtime());
         ticketToUpdate.setNumberSeats(ticketDto.getNumberSeats());
         ticketToUpdate.setTotalPrice(ticketDto.getTotalPrice());
 
         validateTicket(ticketDto);
-        existsCustomerById(ticketDto.getCustomer().getId());
+        // existsCustomerById(ticketDto.getCustomer().getId());
         existsShowtimeById(ticketDto.getShowtime().getId());
 
         Ticket updatedTicket = ticketRepository.save(ticketToUpdate);
@@ -114,9 +112,9 @@ public class TicketServiceImpl implements TicketService {
     }
 
     private void validateTicket(TicketDto ticket) {
-        if (ticket.getCustomer() == null) {
-            throw new ResourceValidationException("Customer id es requerido");
-        }
+        // if (ticket.getCustomer() == null) {
+        //     throw new ResourceValidationException("Customer id es requerido");
+        // }
         if (ticket.getShowtime() == null) {
             throw new ResourceValidationException("Showtime id es requerido");
         }
@@ -129,9 +127,9 @@ public class TicketServiceImpl implements TicketService {
     }
 
     private void existsCustomerById(Integer id) {
-        if (!customerRepository.existsById(id)) {
-            throw new ResourceValidationException("Customer id not found");
-        }
+        // if (!customerRepository.existsById(id)) {
+        //     throw new ResourceValidationException("Customer id not found");
+        // }
     }
 
     private void existsShowtimeById(Integer id) {

@@ -3,7 +3,7 @@ package com.upc.TuCine.shared.exception;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import jakarta.validation.ConstraintViolation;
+import javax.validation.ConstraintViolation;
 
 public class ResourceValidationException extends RuntimeException{
     public ResourceValidationException() {

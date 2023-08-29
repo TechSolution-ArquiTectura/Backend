@@ -2,12 +2,12 @@ package com.upc.TuCine.service.impl;
 
 import com.upc.TuCine.dto.PromotionDto;
 import com.upc.TuCine.model.Business;
-import com.upc.TuCine.model.Person;
 import com.upc.TuCine.model.Promotion;
 import com.upc.TuCine.repository.BusinessRepository;
 import com.upc.TuCine.repository.PromotionRepository;
 import com.upc.TuCine.service.PromotionService;
 import com.upc.TuCine.shared.exception.ResourceValidationException;
+import com.upc.TuCine.user.domain.model.entity.User;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

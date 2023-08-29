@@ -2,7 +2,7 @@ package com.upc.TuCine.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +22,7 @@ import java.time.LocalTime;
 public class Showtime {
 
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "date", nullable = false)

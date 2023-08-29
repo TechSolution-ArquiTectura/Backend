@@ -4,7 +4,7 @@ import com.upc.TuCine.dto.*;
 import com.upc.TuCine.service.FilmService;
 import com.upc.TuCine.shared.exception.ResourceValidationException;
 
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

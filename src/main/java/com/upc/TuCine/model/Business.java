@@ -1,14 +1,14 @@
 package com.upc.TuCine.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
+import com.upc.TuCine.user.domain.model.entity.User;
+
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 
 @Data
 @Builder
@@ -19,7 +19,7 @@ import java.util.List;
 public class Business {
 
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "name", length = 100, nullable = false)
     private String name;
@@ -45,12 +45,12 @@ public class Business {
     private String referenceAddress;
 
     @ManyToOne
-    @JoinColumn(name = "Owner_id",nullable = false, foreignKey = @ForeignKey(name = "FK_OWNER_ID"))
+    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "FK_OWNER_ID"))
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Owner owner;
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name = "BusinessType_id",nullable = false, foreignKey = @ForeignKey(name = "FK_DISTRICT_ID"))
+    @JoinColumn(name = "BusinessType_id", nullable = false, foreignKey = @ForeignKey(name = "FK_DISTRICT_ID"))
 
     private BusinessType businessType;
 }

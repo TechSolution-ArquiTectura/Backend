@@ -1,7 +1,8 @@
 package com.upc.TuCine.dto;
 
 import com.upc.TuCine.model.BusinessType;
-import com.upc.TuCine.model.Owner;
+import com.upc.TuCine.user.domain.model.entity.User;
+
 import lombok.Data;
 
 @Data
@@ -18,6 +19,6 @@ public class BusinessDto {
     private String dateAttention;
     private String address;
     private String referenceAddress;
-    private Owner owner;
+    private User user;
     private BusinessType businessType;
 }

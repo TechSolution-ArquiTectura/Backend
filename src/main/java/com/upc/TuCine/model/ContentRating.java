@@ -1,6 +1,6 @@
 package com.upc.TuCine.model;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ContentRating {
 
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "name", length = 100, nullable = false)
     private String name;

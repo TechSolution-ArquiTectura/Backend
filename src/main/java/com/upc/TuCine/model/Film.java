@@ -2,7 +2,7 @@ package com.upc.TuCine.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +19,7 @@ import java.util.List;
 public class Film {
 
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "title", length = 255, nullable = false)
     private String title;

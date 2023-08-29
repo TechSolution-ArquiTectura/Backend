@@ -1,7 +1,7 @@
 package com.upc.TuCine.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +18,7 @@ import java.util.List;
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "name", length = 50, nullable = false)
     private String name;

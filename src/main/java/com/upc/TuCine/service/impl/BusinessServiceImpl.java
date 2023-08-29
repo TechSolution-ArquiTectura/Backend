@@ -6,10 +6,11 @@ import com.upc.TuCine.dto.ShowtimeDto;
 import com.upc.TuCine.model.*;
 import com.upc.TuCine.repository.BusinessRepository;
 import com.upc.TuCine.repository.BusinessTypeRepository;
-import com.upc.TuCine.repository.OwnerRepository;
 import com.upc.TuCine.repository.ShowtimeRepository;
 import com.upc.TuCine.service.BusinessService;
 import com.upc.TuCine.shared.exception.ResourceValidationException;
+import com.upc.TuCine.user.domain.model.entity.User;
+import com.upc.TuCine.user.domain.persistence.UserRepository;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class BusinessServiceImpl implements BusinessService {
     private BusinessRepository businessRepository;
 
     @Autowired
-    private OwnerRepository ownerRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private BusinessTypeRepository businessTypeRepository;
@@ -61,8 +62,8 @@ public class BusinessServiceImpl implements BusinessService {
         existsByBusinessEmail(businessDto.getEmail());
 
 
-        Owner owner = ownerRepository.findById(businessDto.getOwner().getId()).orElse(null);
-        businessDto.setOwner(owner);
+        User user = userRepository.findById(businessDto.getUser().getId()).orElse(null);
+        businessDto.setUser(user);
 
         BusinessType businessType = businessTypeRepository.findById(businessDto.getBusinessType().getId()).orElse(null);
         businessDto.setBusinessType(businessType);
@@ -149,7 +150,7 @@ public class BusinessServiceImpl implements BusinessService {
         if(business.getBusinessType()==null){
             throw new ResourceValidationException("El tipo de negocio es obligatorio");
         }
-        if(business.getOwner()==null){
+        if(business.getUser()==null){
             throw new ResourceValidationException("El dueño es obligatorio");
         }
     }

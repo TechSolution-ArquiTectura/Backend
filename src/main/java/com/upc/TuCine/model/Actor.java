@@ -1,7 +1,7 @@
 package com.upc.TuCine.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name = "Actor")
 public class Actor {
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "first_name", length = 100, nullable = false)
     private String firstName;
