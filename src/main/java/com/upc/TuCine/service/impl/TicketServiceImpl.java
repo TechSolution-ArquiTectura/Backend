@@ -82,13 +82,12 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public TicketDto deleteTicket(Integer id) {
-        // Ticket ticketToDelete = ticketRepository.findById(id).orElse(null);
-        // if (ticketToDelete == null) {
-        // return null; // O lanzar una excepción si lo prefieres
-        // }
-        // ticketRepository.delete(ticketToDelete);
-        // return EntityToDto(ticketToDelete);
-        throw new UnsupportedOperationException("Unimplemented method 'getAllTicketsByUser'");
+        Ticket ticketToDelete = ticketRepository.findById(id).orElse(null);
+        if (ticketToDelete == null) {
+            throw new ResourceNotFoundException(ENTITY, id);
+        }
+        ticketRepository.delete(ticketToDelete);
+        return mapper.toResource(ticketToDelete);
     }
 
     private void existsUserById(Integer id) {
