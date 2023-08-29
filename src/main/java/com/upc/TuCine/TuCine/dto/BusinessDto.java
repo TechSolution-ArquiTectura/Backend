@@ -4,6 +4,8 @@ import com.upc.TuCine.TuCine.model.BusinessType;
 import com.upc.TuCine.TuCine.model.Owner;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class BusinessDto {
     private Integer id;
@@ -11,13 +13,15 @@ public class BusinessDto {
     private String socialReason;
     private String ruc;
     private String phone;
-    private String email;
-    private String imageLogo;
-    private String imageBanner;
+    private String logoSrc;
+    private String bannerSrc;
     private String description;
     private String dateAttention;
     private String address;
-    private String referenceAddress;
+    private LocalDate startTime;
+    private LocalDate endTime;
+
+
     private Owner owner;
     private BusinessType businessType;
 }

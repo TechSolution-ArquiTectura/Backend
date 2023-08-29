@@ -30,6 +30,8 @@ public class BusinessTypeServiceImpl implements BusinessTypeService {
     public BusinessType DtoToEntity(BusinessTypeDto businessTypeDto){
         return modelMapper.map(businessTypeDto, BusinessType.class);
     }
+
+    //Obtener todos los tipos de negocio
     @Override
     public List<BusinessTypeDto> getAllBusinessTypes() {
         List<BusinessType> businessTypes = businessTypeRepository.findAll();
@@ -37,6 +39,8 @@ public class BusinessTypeServiceImpl implements BusinessTypeService {
                 .map(this::EntityToDto)
                 .collect(Collectors.toList());
     }
+
+    //Obtener un tipo de negocio por id
     @Override
     public BusinessTypeDto getBusinessTypeById(Integer id) {
         BusinessType businessType = businessTypeRepository.findById(id).orElse(null);
@@ -46,11 +50,14 @@ public class BusinessTypeServiceImpl implements BusinessTypeService {
         return EntityToDto(businessType);
     }
 
+    //Crear un tipo de negocio
     @Override
     public BusinessTypeDto createBusinessType(BusinessTypeDto businessTypeDto) {
         BusinessType businessType = DtoToEntity(businessTypeDto);
         return EntityToDto(businessTypeRepository.save(businessType));
     }
+
+    //Comprobar la existencia de un tipo de negocio por nombre
     @Override
     public boolean existsBusinessTypeByName(String name) {
         return businessTypeRepository.existsBusinessTypeByName(name);

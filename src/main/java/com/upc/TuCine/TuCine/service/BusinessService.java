@@ -15,8 +15,12 @@ public interface BusinessService {
 
     BusinessDto getBusinessById(Integer id);
 
-    BusinessTypeDto getBusinessTypeByBusinessId(Integer id);
+    //Get all business types from a business
+    List<BusinessTypeDto> getAllBusinessTypesByBusinessId(Integer id);
 
+
+
+    // ESTO TIENE QUE VER CON SHOWTIME OJO
     List<ShowtimeDto>getAllShowtimesByBusinessId(Integer id);
 
 

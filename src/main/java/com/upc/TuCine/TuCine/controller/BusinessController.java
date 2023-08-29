@@ -48,13 +48,28 @@ public class BusinessController {
     //Method: GET
     @Transactional(readOnly = true)
     @GetMapping("/businesses/{id}/businessTypes")
-    public ResponseEntity<BusinessTypeDto> getBusinessTypeByBusinessId(@PathVariable("id") Integer id) {
-        BusinessTypeDto businessTypeDto = businessService.getBusinessTypeByBusinessId(id);
-        if (businessTypeDto == null) {
+    public ResponseEntity<List<BusinessTypeDto>> getBusinessTypeByBusinessId(@PathVariable("id") Integer id) {
+        List<BusinessTypeDto> businessTypeDtoList = businessService.getAllBusinessTypesByBusinessId(id);
+        if (businessTypeDtoList == null) {
             return ResponseEntity.notFound().build(); // Manejar casos en los que no se encuentre el business
         }
-        return new ResponseEntity<>(businessTypeDto, HttpStatus.OK);
+        return new ResponseEntity<>(businessTypeDtoList, HttpStatus.OK);
     }
+
+
+    //URL: http://localhost:8080/api/TuCine/v1/businesses
+    //Method: POST
+    @Transactional
+    @PostMapping("/businesses")
+    public ResponseEntity<BusinessDto> createBusiness(@RequestBody BusinessDto businessDto){
+        return new ResponseEntity<>(businessService.createBusiness(businessDto), HttpStatus.CREATED);
+    }
+
+
+
+    ///-------------------OJO-------------------///
+
+
 
     //Get all Showtimes by Business Id
     //URL: http://localhost:8080/api/TuCine/v1/businesses/{id}/showtimes
@@ -68,15 +83,5 @@ public class BusinessController {
         }
         return new ResponseEntity<>(showtimeDtoList, HttpStatus.OK);
     }
-
-    //URL: http://localhost:8080/api/TuCine/v1/businesses
-    //Method: POST
-    @Transactional
-    @PostMapping("/businesses")
-    public ResponseEntity<BusinessDto> createBusiness(@RequestBody BusinessDto businessDto){
-        return new ResponseEntity<>(businessService.createBusiness(businessDto), HttpStatus.CREATED);
-    }
-
-
 
 }

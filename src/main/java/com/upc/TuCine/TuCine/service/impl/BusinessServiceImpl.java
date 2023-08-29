@@ -1,5 +1,6 @@
 package com.upc.TuCine.TuCine.service.impl;
 
+import com.upc.TuCine.TuCine.dto.ActorDto;
 import com.upc.TuCine.TuCine.dto.BusinessDto;
 import com.upc.TuCine.TuCine.dto.BusinessTypeDto;
 import com.upc.TuCine.TuCine.dto.ShowtimeDto;
@@ -35,6 +36,8 @@ public class BusinessServiceImpl implements BusinessService {
     @Autowired
     private ModelMapper modelMapper;
 
+
+
     BusinessServiceImpl(){
         this.modelMapper = new ModelMapper();
     }
@@ -57,14 +60,9 @@ public class BusinessServiceImpl implements BusinessService {
         validateBusiness(businessDto);
         existsByBusinessName(businessDto.getName());
         existsByBusinessRuc(businessDto.getRuc());
-        existsByBusinessEmail(businessDto.getEmail());
-
 
         Owner owner = ownerRepository.findById(businessDto.getOwner().getId()).orElse(null);
         businessDto.setOwner(owner);
-
-        BusinessType businessType = businessTypeRepository.findById(businessDto.getBusinessType().getId()).orElse(null);
-        businessDto.setBusinessType(businessType);
 
         Business business = DtoToEntity(businessDto);
         return EntityToDto(businessRepository.save(business));
@@ -89,15 +87,19 @@ public class BusinessServiceImpl implements BusinessService {
 
 
     @Override
-    public BusinessTypeDto getBusinessTypeByBusinessId(Integer id) {
-        Business business = businessRepository.getById(id);
+    public List<BusinessTypeDto> getAllBusinessTypesByBusinessId(Integer id) {
+        Business business = businessRepository.findById(id).orElse(null);
         if (business == null) {
             return null;
         }
-        BusinessType businessType = business.getBusinessType();
-        return convertBusinessTypeToDto(businessType);
+        List<BusinessTypeDto> businessTypes =business.getBusinessTypes().stream()
+                .map(businessType -> modelMapper.map(businessType, BusinessTypeDto.class))
+                .collect(Collectors.toList());
+        return businessTypes;
+
     }
 
+    // ESTO TIENE QUE VER CON SHOWTIME OJO
     @Override
     public List<ShowtimeDto> getAllShowtimesByBusinessId(Integer id) {
         Business business = businessRepository.findById(id).orElse(null);
@@ -121,19 +123,13 @@ public class BusinessServiceImpl implements BusinessService {
         if (business.getRuc() == null || business.getRuc().isEmpty()) {
             throw new ValidationException("El RUC es obligatorio");
         }
-        if (business.getEmail() == null || business.getEmail().isEmpty()) {
-            throw new ValidationException("El correo es obligatorio");
-        }
-        if (business.getAddress() == null || business.getAddress().isEmpty()) {
-            throw new ValidationException("La dirección es obligatoria");
-        }
         if (business.getPhone() == null || business.getPhone().isEmpty()) {
             throw new ValidationException("El teléfono es obligatorio");
         }
-        if(business.getImageLogo()==null || business.getImageLogo().isEmpty()){
+        if(business.getLogoSrc()==null || business.getLogoSrc().isEmpty()){
             throw new ValidationException("La imagen es obligatoria");
         }
-        if(business.getImageBanner()==null || business.getImageBanner().isEmpty()){
+        if(business.getBannerSrc()==null || business.getBannerSrc().isEmpty()){
             throw new ValidationException("La imagen es obligatoria");
         }
         if(business.getDescription()==null || business.getDescription().isEmpty()){
@@ -142,9 +138,11 @@ public class BusinessServiceImpl implements BusinessService {
         if(business.getDateAttention()==null || business.getDateAttention().isEmpty()){
             throw new ValidationException("La fecha de atención es obligatoria");
         }
-        if(business.getReferenceAddress()==null || business.getReferenceAddress().isEmpty()){
-            throw new ValidationException("La referencia de la dirección es obligatoria");
+        if (business.getAddress() == null || business.getAddress().isEmpty()) {
+            throw new ValidationException("La dirección es obligatoria");
         }
+
+        //FK
         if(business.getBusinessType()==null){
             throw new ValidationException("El tipo de negocio es obligatorio");
         }
@@ -163,9 +161,5 @@ public class BusinessServiceImpl implements BusinessService {
             throw new ValidationException("Un Business con ese RUC ya existe");
         }
     }
-    public void existsByBusinessEmail(String businessEmail) {
-        if (businessRepository.existsBusinessByEmail(businessEmail)) {
-            throw new ValidationException("Un Business con ese correo ya existe");
-        }
-    }
+
 }

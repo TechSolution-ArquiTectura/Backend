@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -38,13 +39,20 @@ public class Business {
     @Column(name = "address", length = 200, nullable = false)
     private String address;
 
+    // Es de la tabla Opening Hours
+    @Column(name = "start_time",nullable = false)
+    private LocalDate startTime;
+    @Column(name = "end_time", nullable = false)
+    private LocalDate endTime;
+
     //Aqui faltaría cambiar owner por user (etiquetas)
     @ManyToOne
     @JoinColumn(name = "Owner_id",nullable = false, foreignKey = @ForeignKey(name = "FK_OWNER_ID"))
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Owner owner;
 
-    @ManyToOne
-    @JoinColumn(name = "BusinessType_id",nullable = false, foreignKey = @ForeignKey(name = "FK_DISTRICT_ID"))
-    private BusinessType businessType;
+    @JsonIgnore
+    @ManyToMany
+    private List<BusinessType> businessTypes;
+
 }
