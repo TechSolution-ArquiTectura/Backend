@@ -2,9 +2,6 @@ package com.upc.TuCine.security.domain.service.communication;
 
 import lombok.Getter;
 import lombok.Setter;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -45,6 +42,6 @@ public class RegisterRequest {
     @NotNull
     private LocalDate birthdate;
 
-    private Set<String> typeUsers;
-    private Set<String> genders;
+    private Set<String> typeUser;
+    private Set<String> gender;
 }

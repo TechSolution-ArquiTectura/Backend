@@ -6,7 +6,6 @@ import com.upc.TuCine.security.domain.model.entity.TypeUser;
 
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +13,6 @@ import lombok.Setter;
 import lombok.With;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter

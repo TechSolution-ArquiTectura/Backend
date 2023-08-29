@@ -132,13 +132,13 @@ public class UserServiceImpl implements UserService {
         }
 
         try {
-            Set<String> rolesStringSet = request.getTypeUsers();
+            Set<String> rolesStringSet = request.getTypeUser();
             Set<TypeUser> roles = new HashSet<>();
-            Set<String> gendersStringSet = request.getGenders();
+            Set<String> gendersStringSet = request.getGender();
             Set<Gender> genders = new HashSet<>();
 
             if (rolesStringSet == null) {
-                typeUserRepository.findByName(TypeUsers.CINEPHILE)
+                typeUserRepository.findByName(TypeUsers.BUSINESS)
                         .map(roles::add)
                         .orElseThrow(() -> new RuntimeException("TypeUser not found."));
             } else {
@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
             }
 
             if (gendersStringSet == null) {
-                genderRepository.findByName(Genders.MALE)
+                genderRepository.findByName(Genders.FEMALE)
                         .map(genders::add)
                         .orElseThrow(() -> new RuntimeException("Gender not found."));
             } else {
