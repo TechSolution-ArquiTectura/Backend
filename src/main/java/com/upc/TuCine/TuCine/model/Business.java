@@ -27,23 +27,18 @@ public class Business {
     private String socialReason;
     @Column(name = "ruc", length = 11, nullable = false)
     private String ruc;
-    @Column(name = "phone", length = 9, nullable = false)
+    @Column(name = "phone", length = 9)
     private String phone;
-    @Column(name = "email", length = 100, nullable = false)
-    private String email;
-    @Column(name = "image_logo", length = 5000, nullable = false)
-    private String imageLogo;
-    @Column(name = "image_banner", length = 5000, nullable = false)
-    private String imageBanner;
+    @Column(name = "logo_src", length = 5000)
+    private String logoSrc;
+    @Column(name = "banner_src", length = 5000)
+    private String bannerSrc;
     @Column(name = "description", length = 2000, nullable = false)
     private String description;
-    @Column(name = "date_attention", length = 800, nullable = false)
-    private String dateAttention;
     @Column(name = "address", length = 200, nullable = false)
     private String address;
-    @Column(name = "reference_address", length = 200, nullable = false)
-    private String referenceAddress;
 
+    //Aqui faltaría cambiar owner por user (etiquetas)
     @ManyToOne
     @JoinColumn(name = "Owner_id",nullable = false, foreignKey = @ForeignKey(name = "FK_OWNER_ID"))
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -51,6 +46,5 @@ public class Business {
 
     @ManyToOne
     @JoinColumn(name = "BusinessType_id",nullable = false, foreignKey = @ForeignKey(name = "FK_DISTRICT_ID"))
-
     private BusinessType businessType;
 }
