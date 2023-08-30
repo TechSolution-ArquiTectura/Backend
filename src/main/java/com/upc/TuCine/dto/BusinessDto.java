@@ -1,9 +1,12 @@
 package com.upc.TuCine.dto;
 
 import com.upc.TuCine.model.BusinessType;
-import com.upc.TuCine.user.domain.model.entity.User;
 
+import com.upc.TuCine.user.domain.model.entity.User;
 import lombok.Data;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class BusinessDto {
@@ -12,13 +15,13 @@ public class BusinessDto {
     private String socialReason;
     private String ruc;
     private String phone;
-    private String email;
-    private String imageLogo;
-    private String imageBanner;
+    private String logoSrc;
+    private String bannerSrc;
     private String description;
-    private String dateAttention;
     private String address;
-    private String referenceAddress;
+    private LocalDate startTime;
+    private LocalDate endTime;
+
     private User user;
-    private BusinessType businessType;
+    private List<BusinessType> businessTypes;
 }

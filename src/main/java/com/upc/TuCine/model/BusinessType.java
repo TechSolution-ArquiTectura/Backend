@@ -1,10 +1,13 @@
 package com.upc.TuCine.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -19,4 +22,8 @@ public class BusinessType {
     private Integer id;
     @Column(name = "name", length = 100, nullable = false)
     private String name;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "businessTypes")
+    private List<Business> businesses;
 }
