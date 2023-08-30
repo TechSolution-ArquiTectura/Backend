@@ -25,28 +25,23 @@ public class Showtime {
     @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "date", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "available_film_id", nullable = false, foreignKey = @ForeignKey(name = "FK_SHOWTIME_FILM"))
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private AvailableFilm availableFilm;
+
+    @Column(name = "play_date", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private LocalDate date;
+    private LocalDate playDate;
 
-    @Column(name = "time", nullable = false)
+    @Column(name = "playtime", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
-    private LocalTime time;
+    private LocalTime playtime;
 
-    @Column(name = "price")
-    private Float price;
+    @Column(name = "capacity", nullable = false)
+    private Integer capacity;
 
-    @ManyToOne
-    @JoinColumn(name = "film_id", nullable = false, foreignKey = @ForeignKey(name = "FK_SHOWTIME_FILM"))
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Film film;
+    @Column(name = "unit_price", nullable = false)
+    private Float unitPrice;
 
-    @ManyToOne
-    @JoinColumn(name = "business_id", nullable = false, foreignKey = @ForeignKey(name = "FK_SHOWTIME_BUSINESS"))
-    private Business business;
-
-    @ManyToOne
-    @JoinColumn(name = "promotion_id", foreignKey = @ForeignKey(name = "FK_SHOWTIME_PROMOTION"))
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Promotion promotion;
 }
