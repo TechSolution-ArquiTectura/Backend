@@ -51,7 +51,7 @@ public class PromotionServiceImpl implements PromotionService {
     public PromotionDto createPromotion(PromotionDto promotionDto) {
 
         validatePromotion(promotionDto);
-        existsPromotionByTitle(promotionDto.getTitle());
+        existsPromotionByName(promotionDto.getName());
 
         Business business;
         try {
@@ -74,11 +74,11 @@ public class PromotionServiceImpl implements PromotionService {
         validatePromotion(promotionDto);
 
         // Actualizar los campos de la promoción existente
-        promotionToUpdate.setTitle(promotionDto.getTitle());
+        promotionToUpdate.setName(promotionDto.getName());
         promotionToUpdate.setDescription(promotionDto.getDescription());
-        promotionToUpdate.setStartDate(promotionDto.getStartDate());
+        promotionToUpdate.setInitDate(promotionDto.getInitDate());
         promotionToUpdate.setEndDate(promotionDto.getEndDate());
-        promotionToUpdate.setDiscount(promotionDto.getDiscount());
+        promotionToUpdate.setDiscountPercentage(promotionDto.getDiscountPercentage());
 
         // Guardar la promoción actualizada en el repositorio
         Promotion updatedPromotion = promotionRepository.save(promotionToUpdate);
@@ -96,32 +96,32 @@ public class PromotionServiceImpl implements PromotionService {
         return EntityToDto(promotionToDelete);
     }
     private void validatePromotion(PromotionDto promotion) {
-        if (promotion.getTitle() == null || promotion.getTitle().isEmpty()) {
-            throw new ValidationException("El titulo no puede ser nulo o estar vacío");
+        if (promotion.getName() == null || promotion.getName().isEmpty()) {
+            throw new ValidationException("El nombre no puede ser nulo o estar vacío");
         }
         if (promotion.getDescription() == null || promotion.getDescription().isEmpty()) {
             throw new ValidationException("La descripción no puede ser nula o estar vacía");
         }
-        if (promotion.getStartDate() == null) {
+        if (promotion.getInitDate() == null) {
             throw new ValidationException("La fecha de inicio no puede ser nula");
         }
         if (promotion.getEndDate() == null) {
             throw new ValidationException("La fecha de fin no puede ser nula");
         }
-        if (promotion.getStartDate().isAfter(promotion.getEndDate())) {
+        if (promotion.getInitDate().isAfter(promotion.getEndDate())) {
             throw new ValidationException("La fecha de inicio no puede ser mayor a la fecha de fin");
         }
-        if(promotion.getDiscount() == null){
-            throw new ValidationException("El descuento no puede ser nulo");
+        if(promotion.getDiscountPercentage() == null){
+            throw new ValidationException("El porcentaje de descuento no puede ser nulo");
         }
         if(promotion.getBusiness()==null){
             throw new ValidationException("El negocio no puede ser nulo");
         }
     }
 
-    public void existsPromotionByTitle(String title) {
-        if (promotionRepository.existsPromotionByTitle(title)) {
-            throw new ValidationException("Ya existe una promoción con el título " + title);
+    public void existsPromotionByName(String name) {
+        if (promotionRepository.existsPromotionByName(name)) {
+            throw new ValidationException("Ya existe una promoción con el nombre " + name);
         }
     }
 }
