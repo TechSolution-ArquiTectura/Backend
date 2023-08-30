@@ -27,7 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 				)
 		),
 		servers = {
-				@Server(url = "https://backend-tucine-production.up.railway.app")
+				@Server(url = "http://localhost:8080")
 		}
 )
 @EnableJpaAuditing
