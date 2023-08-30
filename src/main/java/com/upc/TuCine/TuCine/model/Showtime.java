@@ -23,7 +23,7 @@ public class Showtime {
 
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-    private String id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "available_film_id", nullable = false, foreignKey = @ForeignKey(name = "FK_SHOWTIME_FILM"))
@@ -42,6 +42,6 @@ public class Showtime {
     private Integer capacity;
 
     @Column(name = "unit_price", nullable = false)
-    private float unitPrice;
+    private Float unitPrice;
 
 }
