@@ -3,10 +3,7 @@ package com.upc.TuCine.TuCine.service.impl;
 import com.upc.TuCine.TuCine.dto.ShowtimeDto;
 import com.upc.TuCine.TuCine.exception.ValidationException;
 import com.upc.TuCine.TuCine.model.*;
-import com.upc.TuCine.TuCine.repository.BusinessRepository;
-import com.upc.TuCine.TuCine.repository.FilmRepository;
-import com.upc.TuCine.TuCine.repository.PromotionRepository;
-import com.upc.TuCine.TuCine.repository.ShowtimeRepository;
+import com.upc.TuCine.TuCine.repository.*;
 import com.upc.TuCine.TuCine.service.ShowtimeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +19,7 @@ public class ShowtimeServiceImpl implements ShowtimeService {
     private ShowtimeRepository showtimeRepository;
 
     @Autowired
-    private PromotionRepository promotionRepository;
-
-    @Autowired
-    private BusinessRepository businessRepository;
-
-    @Autowired
-    private FilmRepository filmRepository;
+    private AvailableFilmRepository availableFilmRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -65,26 +56,15 @@ public class ShowtimeServiceImpl implements ShowtimeService {
     @Override
     public ShowtimeDto createShowtime(ShowtimeDto showtimeDto) {
 
-        Film film = filmRepository.findById(showtimeDto.getFilm().getId()).orElse(null);
-        showtimeDto.setFilm(film);
-
-        Business business = businessRepository.findById(showtimeDto.getBusiness().getId()).orElse(null);
-        showtimeDto.setBusiness(business);
-
-        Promotion promotion;
-        try {
-            promotion = promotionRepository.findById(showtimeDto.getPromotion().getId()).orElse(null);
-        } catch (Exception e) {
-            promotion= null;
-        }
-        showtimeDto.setPromotion(promotion);
-
         validateShowtime(showtimeDto);
-        existsFilmById(showtimeDto.getFilm().getId());
-        existsBusinessById(showtimeDto.getBusiness().getId());
-        if (showtimeDto.getPromotion() != null) {
-            existsPromotionById(showtimeDto.getPromotion().getId());
+
+        AvailableFilm availableFilm;
+        try {
+            availableFilm = availableFilmRepository.findById(showtimeDto.getAvailableFilm().getId()).orElse(null);
+        } catch (Exception e) {
+            availableFilm = null;
         }
+        showtimeDto.setAvailableFilm(availableFilm);
         Showtime showtime = DtoToEntity(showtimeDto);
         Showtime createdShowtime = showtimeRepository.save(showtime);
 
@@ -98,23 +78,14 @@ public class ShowtimeServiceImpl implements ShowtimeService {
             return null; // O lanzar una excepción si lo prefieres
         }
         validateShowtime(showtimeDto);
-        existsFilmById(showtimeDto.getFilm().getId());
-        existsBusinessById(showtimeDto.getBusiness().getId());
-        existsPromotionById(showtimeDto.getPromotion().getId());
-
-        Business business = businessRepository.findById(showtimeDto.getBusiness().getId()).orElse(null);
-        showtimeDto.setBusiness(business);
-
-        Promotion promotion = promotionRepository.findById(showtimeDto.getPromotion().getId()).orElse(null);
-        showtimeDto.setPromotion(promotion);
+        existsAvailableFilmById(showtimeDto.getAvailableFilm().getId());
 
         // Actualizar los campos del Showtime existente
-        showtimeToUpdate.setDate(showtimeDto.getDate());
-        showtimeToUpdate.setTime(showtimeDto.getTime());
-        showtimeToUpdate.setPrice(showtimeDto.getPrice());
-        showtimeToUpdate.setFilm(showtimeDto.getFilm());
-        showtimeToUpdate.setBusiness(showtimeDto.getBusiness());
-        showtimeToUpdate.setPromotion(showtimeDto.getPromotion());
+        showtimeToUpdate.setAvailableFilm(showtimeDto.getAvailableFilm());
+        showtimeToUpdate.setPlayDate(showtimeDto.getPlayDate());
+        showtimeToUpdate.setPlaytime(showtimeDto.getPlaytime());
+        showtimeToUpdate.setCapacity(showtimeDto.getCapacity());
+        showtimeToUpdate.setUnitPrice(showtimeDto.getUnitPrice());
 
         // Guardar el Showtime actualizado en el repositorio
         Showtime updatedShowtime = showtimeRepository.save(showtimeToUpdate);
@@ -133,39 +104,23 @@ public class ShowtimeServiceImpl implements ShowtimeService {
     }
 
     private void validateShowtime(ShowtimeDto showtime) {
-        if (showtime.getDate() == null) {
+        if (showtime.getAvailableFilm() == null ) {
+            throw new ValidationException("La película disponible es obligatoria");
+        }
+        if (showtime.getPlayDate() == null) {
             throw new ValidationException("La fecha es obligatoria");
         }
-        if (showtime.getTime() == null ) {
+        if (showtime.getPlaytime() == null ) {
             throw new ValidationException("La hora es obligatoria");
         }
-        if (showtime.getPrice() == null ) {
+        if (showtime.getUnitPrice() == null ) {
             throw new ValidationException("El precio es obligatorio");
         }
-        if (showtime.getFilm() == null ) {
-            throw new ValidationException("La película es obligatoria");
-        }
-        if (showtime.getBusiness() == null ) {
-            throw new ValidationException("El negocio es obligatorio");
-        }
-
     }
 
-    private void existsFilmById(Integer id) {
-        if (!filmRepository.existsById(id)) {
+    private void existsAvailableFilmById(Integer id) {
+        if (!availableFilmRepository.existsById(id)) {
             throw new ValidationException("La película no existe");
-        }
-    }
-
-    private void existsBusinessById(Integer id) {
-        if (!businessRepository.existsById(id)) {
-            throw new ValidationException("El negocio no existe");
-        }
-    }
-
-    private void existsPromotionById(Integer id) {
-        if (!promotionRepository.existsById(id)) {
-            throw new ValidationException("La promoción no existe");
         }
     }
 
