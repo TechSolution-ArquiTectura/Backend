@@ -38,6 +38,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<TicketDto> getAllTickets() {
+
         return mapper.modelListToResource(ticketRepository.findAll());
     }
 
