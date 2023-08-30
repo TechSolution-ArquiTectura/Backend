@@ -1,5 +1,6 @@
 package com.upc.TuCine.security.mapping;
 
+import com.upc.TuCine.mapping.PaymentMethodMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,5 +24,9 @@ public class MappingConfiguration {
     @Bean
     public TicketMapper ticketMapper(){
         return new TicketMapper();
+    }
+    @Bean
+    public PaymentMethodMapper paymentMethodsMapper(){
+        return new PaymentMethodMapper();
     }
 }
