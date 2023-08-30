@@ -1,16 +1,17 @@
-package com.upc.TuCine.TuCine.service.impl;
+package com.upc.TuCine.service.impl;
 
-import com.upc.TuCine.TuCine.dto.ActorDto;
-import com.upc.TuCine.TuCine.dto.BusinessDto;
-import com.upc.TuCine.TuCine.dto.BusinessTypeDto;
-import com.upc.TuCine.TuCine.dto.ShowtimeDto;
-import com.upc.TuCine.TuCine.exception.ValidationException;
-import com.upc.TuCine.TuCine.model.*;
-import com.upc.TuCine.TuCine.repository.BusinessRepository;
-import com.upc.TuCine.TuCine.repository.BusinessTypeRepository;
-import com.upc.TuCine.TuCine.repository.OwnerRepository;
-import com.upc.TuCine.TuCine.repository.ShowtimeRepository;
-import com.upc.TuCine.TuCine.service.BusinessService;
+import com.upc.TuCine.dto.ActorDto;
+import com.upc.TuCine.dto.BusinessDto;
+import com.upc.TuCine.dto.BusinessTypeDto;
+import com.upc.TuCine.dto.ShowtimeDto;
+import com.upc.TuCine.shared.exception.ResourceValidationException;
+import com.upc.TuCine.model.*;
+import com.upc.TuCine.repository.BusinessRepository;
+import com.upc.TuCine.repository.BusinessTypeRepository;
+import com.upc.TuCine.user.domain.model.entity.User;
+import com.upc.TuCine.user.domain.persistence.UserRepository;
+import com.upc.TuCine.repository.ShowtimeRepository;
+import com.upc.TuCine.service.BusinessService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class BusinessServiceImpl implements BusinessService {
     private BusinessRepository businessRepository;
 
     @Autowired
-    private OwnerRepository ownerRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private BusinessTypeRepository businessTypeRepository;
@@ -61,8 +62,8 @@ public class BusinessServiceImpl implements BusinessService {
         existsByBusinessName(businessDto.getName());
         existsByBusinessRuc(businessDto.getRuc());
 
-        Owner owner = ownerRepository.findById(businessDto.getOwner().getId()).orElse(null);
-        businessDto.setOwner(owner);
+        User owner = userRepository.findById(businessDto.getUser().getId()).orElse(null);
+        businessDto.setUser(owner);
 
         Business business = DtoToEntity(businessDto);
         return EntityToDto(businessRepository.save(business));
@@ -99,6 +100,15 @@ public class BusinessServiceImpl implements BusinessService {
 
     }
 
+    @Override
+    public void addBusinessTypeToBusiness(Integer idBusiness, Integer idBusinessType) {
+        Business business = businessRepository.findById(idBusiness).orElseThrow(() -> new ResourceValidationException("El negocio no existe" ));
+        BusinessType businessType = businessTypeRepository.findById(idBusinessType).orElseThrow(() -> new ResourceValidationException("El tipo de negocio no existe" ));
+
+        business.getBusinessTypes().add(businessType);
+        businessRepository.save(business);
+    }
+
     // ESTO TIENE QUE VER CON SHOWTIME OJO
     @Override
     public List<ShowtimeDto> getAllShowtimesByBusinessId(Integer id) {
@@ -115,51 +125,48 @@ public class BusinessServiceImpl implements BusinessService {
 
     public void validateBusiness(BusinessDto business) {
         if (business.getName() == null || business.getName().isEmpty()) {
-            throw new ValidationException("El nombre de negocio es obligatorio");
+            throw new ResourceValidationException("El nombre de negocio es obligatorio");
         }
         if(business.getSocialReason()==null || business.getSocialReason().isEmpty()){
-            throw new ValidationException("La razón social es obligatoria");
+            throw new ResourceValidationException("La razón social es obligatoria");
         }
         if (business.getRuc() == null || business.getRuc().isEmpty()) {
-            throw new ValidationException("El RUC es obligatorio");
+            throw new ResourceValidationException("El RUC es obligatorio");
         }
         if (business.getPhone() == null || business.getPhone().isEmpty()) {
-            throw new ValidationException("El teléfono es obligatorio");
+            throw new ResourceValidationException("El teléfono es obligatorio");
         }
         if(business.getLogoSrc()==null || business.getLogoSrc().isEmpty()){
-            throw new ValidationException("La imagen es obligatoria");
+            throw new ResourceValidationException("La imagen es obligatoria");
         }
         if(business.getBannerSrc()==null || business.getBannerSrc().isEmpty()){
-            throw new ValidationException("La imagen es obligatoria");
+            throw new ResourceValidationException("La imagen es obligatoria");
         }
         if(business.getDescription()==null || business.getDescription().isEmpty()){
-            throw new ValidationException("La descripción es obligatoria");
-        }
-        if(business.getDateAttention()==null || business.getDateAttention().isEmpty()){
-            throw new ValidationException("La fecha de atención es obligatoria");
+            throw new ResourceValidationException("La descripción es obligatoria");
         }
         if (business.getAddress() == null || business.getAddress().isEmpty()) {
-            throw new ValidationException("La dirección es obligatoria");
+            throw new ResourceValidationException("La dirección es obligatoria");
         }
 
         //FK
-        if(business.getBusinessType()==null){
-            throw new ValidationException("El tipo de negocio es obligatorio");
-        }
-        if(business.getOwner()==null){
-            throw new ValidationException("El dueño es obligatorio");
+
+        if(business.getUser()==null){
+            throw new ResourceValidationException("El dueño es obligatorio");
         }
     }
 
     public void existsByBusinessName(String businessName) {
         if (businessRepository.existsBusinessByName(businessName)) {
-            throw new ValidationException("El nombre de negocio ya existe");
+            throw new ResourceValidationException("El nombre de negocio ya existe");
         }
     }
     public void existsByBusinessRuc(String businessRuc) {
         if (businessRepository.existsBusinessByRuc(businessRuc)) {
-            throw new ValidationException("Un Business con ese RUC ya existe");
+            throw new ResourceValidationException("Un Business con ese RUC ya existe");
         }
     }
+
+
 
 }

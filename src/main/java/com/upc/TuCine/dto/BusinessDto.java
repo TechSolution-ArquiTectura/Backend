@@ -1,10 +1,12 @@
-package com.upc.TuCine.TuCine.dto;
+package com.upc.TuCine.dto;
 
-import com.upc.TuCine.TuCine.model.BusinessType;
-import com.upc.TuCine.TuCine.model.Owner;
+import com.upc.TuCine.model.BusinessType;
+
+import com.upc.TuCine.user.domain.model.entity.User;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class BusinessDto {
@@ -16,12 +18,10 @@ public class BusinessDto {
     private String logoSrc;
     private String bannerSrc;
     private String description;
-    private String dateAttention;
     private String address;
     private LocalDate startTime;
     private LocalDate endTime;
 
-
-    private Owner owner;
-    private BusinessType businessType;
+    private User user;
+    private List<BusinessType> businessTypes;
 }

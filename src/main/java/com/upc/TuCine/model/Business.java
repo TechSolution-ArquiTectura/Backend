@@ -1,8 +1,10 @@
-package com.upc.TuCine.TuCine.model;
+package com.upc.TuCine.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
+import javax.persistence.*;
+
+import com.upc.TuCine.user.domain.model.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +22,7 @@ import java.util.List;
 public class Business {
 
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "name", length = 100, nullable = false)
     private String name;
@@ -47,9 +49,9 @@ public class Business {
 
     //Aqui faltaría cambiar owner por user (etiquetas)
     @ManyToOne
-    @JoinColumn(name = "Owner_id",nullable = false, foreignKey = @ForeignKey(name = "FK_OWNER_ID"))
+    @JoinColumn(name = "user_id",nullable = false, foreignKey = @ForeignKey(name = "FK_OWNER_ID"))
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Owner owner;
+    private User user;
 
     @JsonIgnore
     @ManyToMany
