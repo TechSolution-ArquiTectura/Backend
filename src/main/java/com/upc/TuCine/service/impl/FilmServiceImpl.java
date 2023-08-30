@@ -124,18 +124,6 @@ public class FilmServiceImpl implements FilmService {
 
     }
 
-    @Override
-    public List<ShowtimeDto> getAllShowtimesByFilmId(Integer id) {
-        Film film = filmRepository.findById(id).orElse(null);
-        if (film == null) {
-            return null;
-        }
-        List<ShowtimeDto> showtimes = showtimeRepository.findAllByFilm_id(film.getId()).stream()
-                .map(showtime -> modelMapper.map(showtime, ShowtimeDto.class))
-                .collect(Collectors.toList());
-        return showtimes;
-    }
-
     void validateFilm(FilmDto film) {
 
         if(film.getTitle() == null || film.getTitle().isEmpty()) {

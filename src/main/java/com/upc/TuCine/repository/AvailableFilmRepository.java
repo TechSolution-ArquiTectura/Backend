@@ -1,6 +1,6 @@
-package com.upc.TuCine.TuCine.repository;
+package com.upc.TuCine.repository;
 
-import com.upc.TuCine.TuCine.model.AvailableFilm;
+import com.upc.TuCine.model.AvailableFilm;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

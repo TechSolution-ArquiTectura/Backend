@@ -75,24 +75,4 @@ public class BusinessController {
     public ResponseEntity<BusinessDto> createBusiness(@RequestBody BusinessDto businessDto){
         return new ResponseEntity<>(businessService.createBusiness(businessDto), HttpStatus.CREATED);
     }
-
-
-
-    ///-------------------OJO-------------------///
-
-
-
-    //Get all Showtimes by Business Id
-    //URL: http://localhost:8080/api/TuCine/v1/businesses/{id}/showtimes
-    //Method: GET
-    @Transactional(readOnly = true)
-    @GetMapping("/businesses/{id}/showtimes")
-    public ResponseEntity<List<ShowtimeDto>> getAllShowtimesByBusinessId(@PathVariable("id") Integer id) {
-        List<ShowtimeDto> showtimeDtoList = businessService.getAllShowtimesByBusinessId(id);
-        if (showtimeDtoList == null) {
-            return ResponseEntity.notFound().build(); // Manejar casos en los que no se encuentre el business
-        }
-        return new ResponseEntity<>(showtimeDtoList, HttpStatus.OK);
-    }
-
 }

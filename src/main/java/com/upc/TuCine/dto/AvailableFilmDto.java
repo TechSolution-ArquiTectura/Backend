@@ -1,8 +1,8 @@
-package com.upc.TuCine.TuCine.dto;
+package com.upc.TuCine.dto;
 
-import com.upc.TuCine.TuCine.model.Business;
-import com.upc.TuCine.TuCine.model.Film;
-import com.upc.TuCine.TuCine.model.Promotion;
+import com.upc.TuCine.model.Business;
+import com.upc.TuCine.model.Film;
+import com.upc.TuCine.model.Promotion;
 import lombok.Data;
 
 @Data

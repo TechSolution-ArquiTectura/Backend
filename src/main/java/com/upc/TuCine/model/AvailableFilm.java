@@ -1,12 +1,13 @@
-package com.upc.TuCine.TuCine.model;
+package com.upc.TuCine.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Data
 @Builder
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "AvailableFilm")
 public class AvailableFilm {
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne

@@ -1,10 +1,10 @@
-package com.upc.TuCine.TuCine.service.impl;
+package com.upc.TuCine.service.impl;
 
-import com.upc.TuCine.TuCine.dto.ShowtimeDto;
-import com.upc.TuCine.TuCine.exception.ValidationException;
-import com.upc.TuCine.TuCine.model.*;
-import com.upc.TuCine.TuCine.repository.*;
-import com.upc.TuCine.TuCine.service.ShowtimeService;
+import com.upc.TuCine.dto.ShowtimeDto;
+import com.upc.TuCine.shared.exception.ResourceValidationException;
+import com.upc.TuCine.model.*;
+import com.upc.TuCine.repository.*;
+import com.upc.TuCine.service.ShowtimeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -105,22 +105,22 @@ public class ShowtimeServiceImpl implements ShowtimeService {
 
     private void validateShowtime(ShowtimeDto showtime) {
         if (showtime.getAvailableFilm() == null ) {
-            throw new ValidationException("La película disponible es obligatoria");
+            throw new ResourceValidationException("La película disponible es obligatoria");
         }
         if (showtime.getPlayDate() == null) {
-            throw new ValidationException("La fecha es obligatoria");
+            throw new ResourceValidationException("La fecha es obligatoria");
         }
         if (showtime.getPlaytime() == null ) {
-            throw new ValidationException("La hora es obligatoria");
+            throw new ResourceValidationException("La hora es obligatoria");
         }
         if (showtime.getUnitPrice() == null ) {
-            throw new ValidationException("El precio es obligatorio");
+            throw new ResourceValidationException("El precio es obligatorio");
         }
     }
 
     private void existsAvailableFilmById(Integer id) {
         if (!availableFilmRepository.existsById(id)) {
-            throw new ValidationException("La película no existe");
+            throw new ResourceValidationException("La película no existe");
         }
     }
 

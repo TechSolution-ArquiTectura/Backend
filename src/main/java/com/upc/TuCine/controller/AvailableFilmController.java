@@ -1,7 +1,7 @@
-package com.upc.TuCine.TuCine.controller;
+package com.upc.TuCine.controller;
 
-import com.upc.TuCine.TuCine.dto.AvailableFilmDto;
-import com.upc.TuCine.TuCine.service.AvailableFilmService;
+import com.upc.TuCine.dto.AvailableFilmDto;
+import com.upc.TuCine.service.AvailableFilmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,13 +1,13 @@
-package com.upc.TuCine.TuCine.service.impl;
+package com.upc.TuCine.service.impl;
 
-import com.upc.TuCine.TuCine.dto.AvailableFilmDto;
-import com.upc.TuCine.TuCine.exception.ValidationException;
-import com.upc.TuCine.TuCine.model.*;
-import com.upc.TuCine.TuCine.repository.AvailableFilmRepository;
-import com.upc.TuCine.TuCine.repository.BusinessRepository;
-import com.upc.TuCine.TuCine.repository.FilmRepository;
-import com.upc.TuCine.TuCine.repository.PromotionRepository;
-import com.upc.TuCine.TuCine.service.AvailableFilmService;
+import com.upc.TuCine.dto.AvailableFilmDto;
+import com.upc.TuCine.shared.exception.ResourceValidationException;
+import com.upc.TuCine.model.*;
+import com.upc.TuCine.repository.AvailableFilmRepository;
+import com.upc.TuCine.repository.BusinessRepository;
+import com.upc.TuCine.repository.FilmRepository;
+import com.upc.TuCine.repository.PromotionRepository;
+import com.upc.TuCine.service.AvailableFilmService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -111,34 +111,34 @@ public class AvailableFilmServiceImpl implements AvailableFilmService {
 
     private void validateAvailableFilm(AvailableFilmDto availableFilmDto) {
         if (availableFilmDto.getBusiness() == null) {
-            throw new ValidationException("Business id es requerido");
+            throw new ResourceValidationException("Business id es requerido");
         }
         if (availableFilmDto.getFilm() == null) {
-            throw new ValidationException("Film id es requerido");
+            throw new ResourceValidationException("Film id es requerido");
         }
         if (availableFilmDto.getIsAvailable() == null) {
-            throw new ValidationException("isAvailable es requerido");
+            throw new ResourceValidationException("isAvailable es requerido");
         }
         if (availableFilmDto.getPromotion() == null) {
-            throw new ValidationException("Promotion id es requerido");
+            throw new ResourceValidationException("Promotion id es requerido");
         }
     }
 
     private void existsBusinessById(Integer id) {
         if (!businessRepository.existsById(id)) {
-            throw new ValidationException("Business id not found");
+            throw new ResourceValidationException("Business id not found");
         }
     }
 
     private void existsFilmById(Integer id) {
         if (!filmRepository.existsById(id)) {
-            throw new ValidationException("Film id not found");
+            throw new ResourceValidationException("Film id not found");
         }
     }
 
     private void existsPromotionById(Integer id) {
         if (!promotionRepository.existsById(id)) {
-            throw new ValidationException("Promotion id not found");
+            throw new ResourceValidationException("Promotion id not found");
         }
     }
 }

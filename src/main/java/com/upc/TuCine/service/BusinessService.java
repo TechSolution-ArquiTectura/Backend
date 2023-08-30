@@ -18,9 +18,4 @@ public interface BusinessService {
     List<BusinessTypeDto> getAllBusinessTypesByBusinessId(Integer id);
 
     void addBusinessTypeToBusiness(Integer idBusiness, Integer idBusinessType);
-
-    // ESTO TIENE QUE VER CON SHOWTIME OJO
-    List<ShowtimeDto>getAllShowtimesByBusinessId(Integer id);
-
-
 }

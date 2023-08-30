@@ -1,7 +1,7 @@
 package com.upc.TuCine.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.upc.TuCine.TuCine.model.AvailableFilm;
+import com.upc.TuCine.model.AvailableFilm;
 import lombok.Data;
 
 import java.time.LocalDate;

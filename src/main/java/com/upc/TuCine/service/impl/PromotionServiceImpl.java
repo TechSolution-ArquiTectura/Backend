@@ -98,22 +98,22 @@ public class PromotionServiceImpl implements PromotionService {
     }
     private void validatePromotion(PromotionDto promotion) {
         if (promotion.getName() == null || promotion.getName().isEmpty()) {
-            throw new ValidationException("El nombre no puede ser nulo o estar vacío");
+            throw new ResourceValidationException("El nombre no puede ser nulo o estar vacío");
         }
         if (promotion.getDescription() == null || promotion.getDescription().isEmpty()) {
             throw new ResourceValidationException("La descripción no puede ser nula o estar vacía");
         }
         if (promotion.getInitDate() == null) {
-            throw new ValidationException("La fecha de inicio no puede ser nula");
+            throw new ResourceValidationException("La fecha de inicio no puede ser nula");
         }
         if (promotion.getEndDate() == null) {
             throw new ResourceValidationException("La fecha de fin no puede ser nula");
         }
         if (promotion.getInitDate().isAfter(promotion.getEndDate())) {
-            throw new ValidationException("La fecha de inicio no puede ser mayor a la fecha de fin");
+            throw new ResourceValidationException("La fecha de inicio no puede ser mayor a la fecha de fin");
         }
         if(promotion.getDiscountPercentage() == null){
-            throw new ValidationException("El porcentaje de descuento no puede ser nulo");
+            throw new ResourceValidationException("El porcentaje de descuento no puede ser nulo");
         }
         if(promotion.getBusiness()==null){
             throw new ResourceValidationException("El negocio no puede ser nulo");
@@ -122,7 +122,7 @@ public class PromotionServiceImpl implements PromotionService {
 
     public void existsPromotionByName(String name) {
         if (promotionRepository.existsPromotionByName(name)) {
-            throw new ValidationException("Ya existe una promoción con el nombre " + name);
+            throw new ResourceValidationException("Ya existe una promoción con el nombre " + name);
         }
     }
 }

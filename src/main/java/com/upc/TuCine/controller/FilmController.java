@@ -81,19 +81,6 @@ public class FilmController {
         return new ResponseEntity<>(categoryDtoList, HttpStatus.OK);
     }
 
-    //Get all the Showtimes of a Film by Film ID
-    //URL: http://localhost:8080/api/TuCine/v1/films/{id}/showtimes
-    //Method: GET
-    @Transactional(readOnly = true)
-    @GetMapping("/films/{id}/showtimes")
-    public ResponseEntity<List<ShowtimeDto>> getAllShowtimesByFilmId(@PathVariable("id") Integer id) {
-        List<ShowtimeDto> showtimeDtoList = filmService.getAllShowtimesByFilmId(id);
-        if (showtimeDtoList == null) {
-            return ResponseEntity.notFound().build(); // Manejar casos en los que no se encuentre el film
-        }
-        return new ResponseEntity<>(showtimeDtoList, HttpStatus.OK);
-    }
-
     //Get All Actors By Film ID
     //URL: http://localhost:8080/api/TuCine/v1/films/{id}/actors
     //Method: GET

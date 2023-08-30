@@ -1,6 +1,6 @@
-package com.upc.TuCine.TuCine.service;
+package com.upc.TuCine.service;
 
-import com.upc.TuCine.TuCine.dto.AvailableFilmDto;
+import com.upc.TuCine.dto.AvailableFilmDto;
 
 import java.util.List;
 

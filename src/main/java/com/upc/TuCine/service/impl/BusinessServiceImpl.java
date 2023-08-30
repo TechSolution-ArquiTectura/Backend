@@ -109,20 +109,6 @@ public class BusinessServiceImpl implements BusinessService {
         businessRepository.save(business);
     }
 
-    // ESTO TIENE QUE VER CON SHOWTIME OJO
-    @Override
-    public List<ShowtimeDto> getAllShowtimesByBusinessId(Integer id) {
-        Business business = businessRepository.findById(id).orElse(null);
-        if (business == null) {
-            return null;
-        }
-        List<ShowtimeDto> showtimes = showtimeRepository.findAllByBusiness_id(business.getId()).stream()
-                .map(showtime -> modelMapper.map(showtime, ShowtimeDto.class))
-                .collect(Collectors.toList());
-        return showtimes;
-    }
-
-
     public void validateBusiness(BusinessDto business) {
         if (business.getName() == null || business.getName().isEmpty()) {
             throw new ResourceValidationException("El nombre de negocio es obligatorio");

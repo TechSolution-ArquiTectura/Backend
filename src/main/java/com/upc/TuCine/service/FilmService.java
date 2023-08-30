@@ -18,8 +18,6 @@ public interface FilmService {
 
     List<CategoryDto>getAllCategoriesByFilmId(Integer id);
 
-    List<ShowtimeDto>getAllShowtimesByFilmId(Integer id);
-
     List<ActorDto>getAllActorsByFilmId(Integer id);
 
     void addActorToFilm(Integer idFilm, Integer idActor);
