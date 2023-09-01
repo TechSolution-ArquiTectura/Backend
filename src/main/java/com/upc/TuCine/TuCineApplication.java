@@ -39,6 +39,7 @@ public class TuCineApplication {
 	}
 
 	public static void main(String[] args) {
+		/* 
 		// Load environment variables from .env file
         Dotenv dotenv = Dotenv.load();
 
@@ -51,6 +52,7 @@ public class TuCineApplication {
 		System.setProperty("custom.database.url", databaseUrl);
         System.setProperty("custom.datasource.user", dataSourceUser);
 		System.setProperty("custom.datasource.password", dataSourcePassword);
+		*/
 
 		SpringApplication.run(TuCineApplication.class, args);
 	}
