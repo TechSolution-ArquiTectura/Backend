@@ -1,16 +1,14 @@
 package com.upc.TuCine.service.impl;
 
-import com.upc.TuCine.dto.ActorDto;
 import com.upc.TuCine.dto.BusinessDto;
 import com.upc.TuCine.dto.BusinessTypeDto;
-import com.upc.TuCine.dto.ShowtimeDto;
 import com.upc.TuCine.shared.exception.ResourceValidationException;
 import com.upc.TuCine.model.*;
 import com.upc.TuCine.repository.BusinessRepository;
 import com.upc.TuCine.repository.BusinessTypeRepository;
 import com.upc.TuCine.user.domain.model.entity.User;
 import com.upc.TuCine.user.domain.persistence.UserRepository;
-import com.upc.TuCine.repository.ShowtimeRepository;
+import java.util.Collections;
 import com.upc.TuCine.service.BusinessService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +30,6 @@ public class BusinessServiceImpl implements BusinessService {
     private BusinessTypeRepository businessTypeRepository;
 
     @Autowired
-    private ShowtimeRepository showtimeRepository;
-
-    @Autowired
     private ModelMapper modelMapper;
 
 
@@ -43,11 +38,11 @@ public class BusinessServiceImpl implements BusinessService {
         this.modelMapper = new ModelMapper();
     }
 
-    public BusinessDto EntityToDto(Business business){
+    public BusinessDto entitytoDto(Business business){
         return modelMapper.map(business, BusinessDto.class);
     }
 
-    public Business DtoToEntity(BusinessDto businessDto){
+    public Business dtoToEntity(BusinessDto businessDto){
         return modelMapper.map(businessDto, Business.class);
     }
 
@@ -65,15 +60,15 @@ public class BusinessServiceImpl implements BusinessService {
         User owner = userRepository.findById(businessDto.getUser().getId()).orElse(null);
         businessDto.setUser(owner);
 
-        Business business = DtoToEntity(businessDto);
-        return EntityToDto(businessRepository.save(business));
+        Business business = dtoToEntity(businessDto);
+        return entitytoDto(businessRepository.save(business));
     }
 
     @Override
     public List<BusinessDto> getAllBusiness() {
         List<Business> businesses = businessRepository.findAll();
         return businesses.stream()
-                .map(this::EntityToDto)
+                .map(this::entitytoDto)
                 .collect(Collectors.toList());
     }
 
@@ -83,7 +78,7 @@ public class BusinessServiceImpl implements BusinessService {
         if (business == null) {
             return null;
         }
-        return EntityToDto(business);
+        return entitytoDto(business);
     }
 
 
@@ -91,13 +86,11 @@ public class BusinessServiceImpl implements BusinessService {
     public List<BusinessTypeDto> getAllBusinessTypesByBusinessId(Integer id) {
         Business business = businessRepository.findById(id).orElse(null);
         if (business == null) {
-            return null;
+            return Collections.emptyList();
         }
-        List<BusinessTypeDto> businessTypes =business.getBusinessTypes().stream()
+        return business.getBusinessTypes().stream()
                 .map(businessType -> modelMapper.map(businessType, BusinessTypeDto.class))
                 .collect(Collectors.toList());
-        return businessTypes;
-
     }
 
     @Override
@@ -136,7 +129,6 @@ public class BusinessServiceImpl implements BusinessService {
         }
 
         //FK
-
         if(business.getUser()==null){
             throw new ResourceValidationException("El dueño es obligatorio");
         }

@@ -1,7 +1,6 @@
 package com.upc.TuCine.service;
 
 import com.upc.TuCine.dto.*;
-import com.upc.TuCine.model.Showtime;
 
 import java.util.List;
 

@@ -6,6 +6,7 @@ import com.upc.TuCine.repository.*;
 import com.upc.TuCine.service.FilmService;
 import com.upc.TuCine.shared.exception.ResourceNotFoundException;
 import com.upc.TuCine.shared.exception.ResourceValidationException;
+import java.util.Collections;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,6 @@ public class FilmServiceImpl implements FilmService {
     private FilmRepository filmRepository;
     @Autowired
     private ContentRatingRepository contentRatingRepository;
-    @Autowired
-    private ShowtimeRepository showtimeRepository;
     @Autowired
     private ActorRepository actorRepository;
     @Autowired
@@ -86,24 +85,22 @@ public class FilmServiceImpl implements FilmService {
     public List<CategoryDto> getAllCategoriesByFilmId(Integer id) {
         Film film = filmRepository.findById(id).orElse(null);
         if (film == null) {
-            return null;
+            return Collections.emptyList();
         }
-        List<CategoryDto> categories = film.getCategories().stream()
+        return film.getCategories().stream()
                 .map(category -> modelMapper.map(category, CategoryDto.class))
                 .collect(Collectors.toList());
-        return categories;
     }
 
     @Override
     public List<ActorDto> getAllActorsByFilmId(Integer id) {
         Film film = filmRepository.findById(id).orElse(null);
         if (film == null) {
-            return null;
+            return Collections.emptyList();
         }
-        List<ActorDto> actors = film.getActors().stream()
+        return film.getActors().stream()
                 .map(actor -> modelMapper.map(actor, ActorDto.class))
                 .collect(Collectors.toList());
-        return actors;
     }
 
     @Override

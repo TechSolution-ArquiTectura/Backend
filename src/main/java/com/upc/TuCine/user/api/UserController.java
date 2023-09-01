@@ -61,7 +61,7 @@ public class UserController {
     //URL: http://localhost:8080/api/TuCine/v1/users/{id}/typeUser
     //Method: GET
     @Transactional(readOnly = true)
-    @GetMapping("{id}/typeUser")
+    @GetMapping("{userId}/typeUser")
     public ResponseEntity<TypeUserDto> getTypeUserByUserId(@PathVariable("id") Integer id) {
         TypeUserDto typeUserDto = userService.getTypeUserById(id);
         if (typeUserDto == null) {
