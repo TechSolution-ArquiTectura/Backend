@@ -27,7 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 				)
 		),
 		servers = {
-				@Server(url = "http://localhost:8080")
+				@Server(url = "https://backend-production-3909.up.railway.app")
 		}
 )
 @EnableJpaAuditing
