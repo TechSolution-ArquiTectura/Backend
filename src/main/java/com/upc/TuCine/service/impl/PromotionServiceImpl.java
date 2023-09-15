@@ -94,6 +94,7 @@ public class PromotionServiceImpl implements PromotionService {
         promotionToUpdate.setInitDate(promotionDto.getInitDate());
         promotionToUpdate.setEndDate(promotionDto.getEndDate());
         promotionToUpdate.setDiscountPercentage(promotionDto.getDiscountPercentage());
+        promotionToUpdate.setImageSrc(promotionDto.getImageSrc());
 
         // Guardar la promoción actualizada en el repositorio
         Promotion updatedPromotion = promotionRepository.save(promotionToUpdate);
