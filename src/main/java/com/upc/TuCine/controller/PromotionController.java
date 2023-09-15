@@ -29,6 +29,22 @@ public class PromotionController {
         return new ResponseEntity<List<PromotionDto>>(promotionService.getAllPromotions(), HttpStatus.OK);
     }
 
+    //URL: http://localhost:8080/api/TuCine/v1/promotions/{id}
+    //Method: GET
+    @Transactional(readOnly = true)
+    @GetMapping("/promotions/{id}")
+    public ResponseEntity<PromotionDto> getPromotionById(@PathVariable Integer id) {
+        return new ResponseEntity<PromotionDto>(promotionService.getPromotionById(id), HttpStatus.OK);
+    }
+
+    //URL: http://localhost:8080/api/TuCine/v1/promotions/business/{id}
+    //Method: GET
+    @Transactional(readOnly = true)
+    @GetMapping("/promotions/business/{businessId}")
+    public ResponseEntity<List<PromotionDto>> getAllPromotions(@PathVariable Integer businessId) {
+        return new ResponseEntity<List<PromotionDto>>(promotionService.getPromotionsByBusinessId(businessId), HttpStatus.OK);
+    }
+
     //URL: http://localhost:8080/api/TuCine/v1/promotions
     //Method: POST
     @Transactional

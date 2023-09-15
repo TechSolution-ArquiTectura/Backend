@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface PromotionService {
     List<PromotionDto> getAllPromotions();
+    PromotionDto getPromotionById(Integer id);
+    List<PromotionDto> getPromotionsByBusinessId(Integer businessId);
 
     PromotionDto createPromotion(PromotionDto promotionDto);
 
