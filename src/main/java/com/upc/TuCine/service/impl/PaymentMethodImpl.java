@@ -42,9 +42,6 @@ public class PaymentMethodImpl implements PaymentMethodService {
         return mapper.modelListToResource(paymentMethodRepository.findByUserId(userId));
     }
 
-
-
-
     @Override
     public PaymentMethodDto createPaymentMethods(PaymentMethodDto paymentMethodDto) {
         PaymentMethod paymentMethod = mapper.toModel(paymentMethodDto);

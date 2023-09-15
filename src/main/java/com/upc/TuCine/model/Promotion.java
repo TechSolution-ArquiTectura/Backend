@@ -24,11 +24,6 @@ public class Promotion {
     @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "business_id", nullable = false, foreignKey = @ForeignKey(name = "FK_PROMOTION_BUSINESS"))
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Business business;
-
     @Column(name = "name", nullable = false)
     @Size(max = 60)
     private String name;
@@ -47,4 +42,12 @@ public class Promotion {
 
     @Column(name = "discount_percentage", nullable = false)
     private Float discountPercentage;
+
+    @Column(name = "image_src", nullable = true)
+    private String imageSrc;
+
+    @ManyToOne
+    @JoinColumn(name = "business_id", nullable = false, foreignKey = @ForeignKey(name = "FK_PROMOTION_BUSINESS"))
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Business business;
 }
