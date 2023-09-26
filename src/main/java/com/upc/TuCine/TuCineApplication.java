@@ -27,7 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 				)
 		),
 		servers = {
-				@Server(url = "https://backend-production-3909.up.railway.app")
+				@Server(url = "https://backend-production-d5ba.up.railway.app")
 		}
 )
 @EnableJpaAuditing
