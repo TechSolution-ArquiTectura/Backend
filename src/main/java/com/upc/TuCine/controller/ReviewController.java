@@ -31,4 +31,10 @@ public class ReviewController {
     public ResponseEntity<List<ReviewDto>> getAllReviews() {
         return new ResponseEntity<>(reviewService.getAllReviews(), HttpStatus.OK);
     }
+
+    @Transactional(readOnly = true)
+    @GetMapping("/reviews/{businessId}")
+    public ResponseEntity<List<ReviewDto>> getAllByBusinessId(@PathVariable(value = "businessId") Integer businessId) {
+        return new ResponseEntity<>(reviewService.getReviewsByBusinessId(businessId), HttpStatus.OK);
+    }
 }
