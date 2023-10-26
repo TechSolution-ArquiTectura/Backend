@@ -27,7 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 				)
 		),
 		servers = {
-				@Server(url = "https://backend-production-d5ba.up.railway.app")
+				@Server(url = "http://localhost:8080")
 		}
 )
 @EnableJpaAuditing
@@ -39,20 +39,16 @@ public class TuCineApplication {
 	}
 
 	public static void main(String[] args) {
-		/* 
 		// Load environment variables from .env file
         Dotenv dotenv = Dotenv.load();
 
         // Get value of variables
-		String databaseUrl = dotenv.get("DATABASE_URL");
 		String dataSourceUser = dotenv.get("DATASOURCE_USER");
         String dataSourcePassword = dotenv.get("DATASOURCE_PASSWORD");
 		
         // Create custom properties for app
-		System.setProperty("custom.database.url", databaseUrl);
         System.setProperty("custom.datasource.user", dataSourceUser);
 		System.setProperty("custom.datasource.password", dataSourcePassword);
-		*/
 
 		SpringApplication.run(TuCineApplication.class, args);
 	}
