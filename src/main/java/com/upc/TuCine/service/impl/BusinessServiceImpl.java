@@ -56,16 +56,12 @@ public class BusinessServiceImpl implements BusinessService {
         existsByBusinessName(newBusiness.getName());
         existsByBusinessRuc(newBusiness.getRuc());
 
-<<<<<<< HEAD
-        User owner = userRepository.findById(businessDto.getUser().getId()).orElse(null);
-        businessDto.setUser(owner);
-        businessDto.setRating((float) 0);
-        businessDto.setCommentsCount(0);
-=======
+
         User owner = userRepository.findById(newBusiness.getUser().getId()).orElse(null);
         newBusiness.setUser(owner);
->>>>>>> parent of 61319e0 (Revert "fix: Business controllers")
-
+        newBusiness.setRating((float) 0);
+        newBusiness.setCommentsCount(0);
+        
         Business business = registerToEntity(newBusiness);
         return businessRepository.save(business);
     }

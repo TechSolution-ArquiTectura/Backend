@@ -21,6 +21,9 @@ public class RegisterBusiness {
     private String description;
     @NotBlank
     private String address;
+    private Float rating;
+    private Integer commentsCount;
+
 
     private User user;
     private List<BusinessType> businessTypes;
