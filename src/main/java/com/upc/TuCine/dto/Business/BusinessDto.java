@@ -1,4 +1,4 @@
-package com.upc.TuCine.dto;
+package com.upc.TuCine.dto.Business;
 
 import com.upc.TuCine.model.BusinessType;
 
@@ -10,6 +10,8 @@ import java.util.List;
 
 @Data
 public class BusinessDto {
+
+
     private Integer id;
     private String name;
     private String socialReason;
