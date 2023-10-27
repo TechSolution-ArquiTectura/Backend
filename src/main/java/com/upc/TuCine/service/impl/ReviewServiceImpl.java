@@ -1,6 +1,7 @@
 package com.upc.TuCine.service.impl;
 
 import com.upc.TuCine.dto.ReviewDto;
+import com.upc.TuCine.model.Business;
 import com.upc.TuCine.model.Review;
 import com.upc.TuCine.repository.BusinessRepository;
 import com.upc.TuCine.repository.ReviewRepository;
@@ -81,6 +82,13 @@ public class ReviewServiceImpl implements ReviewService {
         reviewDto.setUser(user);
 
         Review review = DtoToEntity(reviewDto);
+
+        Business businessToUpdate = businessRepository.findById(reviewDto.getBusiness().getId()).orElse(null);
+        Float newRating = ((businessToUpdate.getRating() * businessToUpdate.getCommentsCount()) + reviewDto.getRating())/(businessToUpdate.getCommentsCount() + 1);
+        businessToUpdate.setRating(newRating);
+        businessToUpdate.setCommentsCount(businessToUpdate.getCommentsCount() + 1);
+
+        businessRepository.save(businessToUpdate);
         return EntityToDto(reviewRepository.save(review));
     }
 

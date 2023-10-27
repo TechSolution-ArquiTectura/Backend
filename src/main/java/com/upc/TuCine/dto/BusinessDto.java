@@ -21,6 +21,8 @@ public class BusinessDto {
     private String address;
     private LocalDate startTime;
     private LocalDate endTime;
+    private Float rating;
+    private Integer commentsCount;
 
     private User user;
     private List<BusinessType> businessTypes;

@@ -59,6 +59,8 @@ public class BusinessServiceImpl implements BusinessService {
 
         User owner = userRepository.findById(businessDto.getUser().getId()).orElse(null);
         businessDto.setUser(owner);
+        businessDto.setRating((float) 0);
+        businessDto.setCommentsCount(0);
 
         Business business = dtoToEntity(businessDto);
         return entitytoDto(businessRepository.save(business));
