@@ -1,10 +1,10 @@
 package com.upc.TuCine.controller;
 
-import com.upc.TuCine.dto.Business.BusinessDto;
-import com.upc.TuCine.dto.Business.RegisterBusiness;
+import com.upc.TuCine.dto.BusinessDto;
 import com.upc.TuCine.dto.BusinessTypeDto;
-import com.upc.TuCine.model.Business;
+import com.upc.TuCine.dto.ShowtimeDto;
 import com.upc.TuCine.service.BusinessService;
+import com.upc.TuCine.shared.exception.ResourceValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -72,19 +72,7 @@ public class BusinessController {
     //Method: POST
     @Transactional
     @PostMapping("/businesses")
-    public ResponseEntity<Business> createBusiness(@RequestBody RegisterBusiness newBusiness){
-        return new ResponseEntity<>(businessService.createBusiness(newBusiness), HttpStatus.CREATED);
-    }
-
-    //URL: http://localhost:8080/api/TuCine/v1/businesses/{id}
-    //Method: PUT
-    @Transactional
-    @PutMapping("/businesses/{id}")
-    public ResponseEntity<BusinessDto> updateBusiness(@PathVariable(value = "id") Integer id, @RequestBody BusinessDto newBusiness){
-        BusinessDto businessDto = businessService.updateBusiness(id, newBusiness);
-        if (businessDto == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(businessDto, HttpStatus.OK);
+    public ResponseEntity<BusinessDto> createBusiness(@RequestBody BusinessDto businessDto){
+        return new ResponseEntity<>(businessService.createBusiness(businessDto), HttpStatus.CREATED);
     }
 }

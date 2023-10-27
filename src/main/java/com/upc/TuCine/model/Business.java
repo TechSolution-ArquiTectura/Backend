@@ -32,20 +32,22 @@ public class Business {
     private String ruc;
     @Column(name = "phone", length = 9)
     private String phone;
-    @Column(name = "logo_src")
+    @Column(name = "logo_src", length = 5000)
     private String logoSrc;
-    @Column(name = "banner_src")
+    @Column(name = "banner_src", length = 5000)
     private String bannerSrc;
     @Column(name = "description", length = 2000, nullable = false)
     private String description;
     @Column(name = "address", length = 200, nullable = false)
     private String address;
 
-    @Column(name = "start_time")
+    // Es de la tabla Opening Hours
+    @Column(name = "start_time",nullable = false)
     private LocalDate startTime;
-    @Column(name = "end_time")
+    @Column(name = "end_time", nullable = false)
     private LocalDate endTime;
 
+    //Aqui faltaría cambiar owner por user (etiquetas)
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false, foreignKey = @ForeignKey(name = "FK_OWNER_ID"))
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
