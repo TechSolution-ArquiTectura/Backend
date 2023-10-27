@@ -13,54 +13,42 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
-@OpenAPIDefinition(
-		info = @Info(
-				title = "API TuCine",
-				version = "1.0",
-				description = "API para gestionar la aplicación web TuCine",
-				contact = @Contact(
-						name = "TuCine",
-						email = "tucine@gmail.com"),
-				license = @License(
-						name = "Apache 2.0",
-						url = "http://www.apache.org/licenses/LICENSE-2.0.html"
-				)
-		),
-		servers = {
-				@Server(url = "http://localhost:8080")
-		}
-)
+@OpenAPIDefinition(info = @Info(title = "API TuCine", version = "1.0", description = "API para gestionar la aplicación web TuCine", contact = @Contact(name = "TuCine", email = "tucine@gmail.com"), license = @License(name = "Apache 2.0", url = "http://www.apache.org/licenses/LICENSE-2.0.html")), servers = {
+		@Server(url = "http://localhost:8080")
+})
 @EnableJpaAuditing
 public class TuCineApplication {
 
 	@Bean
-	public ModelMapper modelMapper(){
+	public ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
 
 	public static void main(String[] args) {
-		// Load environment variables from .env file
-        Dotenv dotenv = Dotenv.load();
-
-        // Get value of variables
-		String dataSourceUser = dotenv.get("DATASOURCE_USER");
-        String dataSourcePassword = dotenv.get("DATASOURCE_PASSWORD");
-		
-        // Create custom properties for app
-        System.setProperty("custom.datasource.user", dataSourceUser);
-		System.setProperty("custom.datasource.password", dataSourcePassword);
+		/*
+		 * // Load environment variables from .env file
+		 * Dotenv dotenv = Dotenv.load();
+		 * 
+		 * // Get value of variables
+		 * String dataSourceUser = dotenv.get("DATASOURCE_USER");
+		 * String dataSourcePassword = dotenv.get("DATASOURCE_PASSWORD");
+		 * 
+		 * // Create custom properties for app
+		 * System.setProperty("custom.datasource.user", dataSourceUser);
+		 * System.setProperty("custom.datasource.password", dataSourcePassword);
+		 */
 
 		SpringApplication.run(TuCineApplication.class, args);
 	}
 
 	@Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE");
-            }
-        };
-    }
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**")
+						.allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE");
+			}
+		};
+	}
 }
