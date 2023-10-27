@@ -1,6 +1,7 @@
 package com.upc.TuCine.service.impl;
 
-import com.upc.TuCine.dto.BusinessDto;
+import com.upc.TuCine.dto.Business.BusinessDto;
+import com.upc.TuCine.dto.Business.RegisterBusiness;
 import com.upc.TuCine.dto.BusinessTypeDto;
 import com.upc.TuCine.shared.exception.ResourceValidationException;
 import com.upc.TuCine.model.*;
@@ -32,8 +33,6 @@ public class BusinessServiceImpl implements BusinessService {
     @Autowired
     private ModelMapper modelMapper;
 
-
-
     BusinessServiceImpl(){
         this.modelMapper = new ModelMapper();
     }
@@ -46,24 +45,29 @@ public class BusinessServiceImpl implements BusinessService {
         return modelMapper.map(businessDto, Business.class);
     }
 
-    public BusinessTypeDto convertBusinessTypeToDto(BusinessType businessType){
-        return modelMapper.map(businessType, BusinessTypeDto.class);
+    public Business registerToEntity(RegisterBusiness registerBusiness){
+        return modelMapper.map(registerBusiness, Business.class);
     }
 
     @Override
-    public BusinessDto createBusiness(BusinessDto businessDto) {
+    public Business createBusiness(RegisterBusiness newBusiness) {
 
-        validateBusiness(businessDto);
-        existsByBusinessName(businessDto.getName());
-        existsByBusinessRuc(businessDto.getRuc());
+        validateBusiness(newBusiness);
+        existsByBusinessName(newBusiness.getName());
+        existsByBusinessRuc(newBusiness.getRuc());
 
+<<<<<<< HEAD
         User owner = userRepository.findById(businessDto.getUser().getId()).orElse(null);
         businessDto.setUser(owner);
         businessDto.setRating((float) 0);
         businessDto.setCommentsCount(0);
+=======
+        User owner = userRepository.findById(newBusiness.getUser().getId()).orElse(null);
+        newBusiness.setUser(owner);
+>>>>>>> parent of 61319e0 (Revert "fix: Business controllers")
 
-        Business business = dtoToEntity(businessDto);
-        return entitytoDto(businessRepository.save(business));
+        Business business = registerToEntity(newBusiness);
+        return businessRepository.save(business);
     }
 
     @Override
@@ -104,7 +108,20 @@ public class BusinessServiceImpl implements BusinessService {
         businessRepository.save(business);
     }
 
-    public void validateBusiness(BusinessDto business) {
+    @Override
+    public BusinessDto updateBusiness(Integer id, BusinessDto newBusiness) {
+        Business business = businessRepository.findById(id).orElse(null);
+        if (business == null) {
+            return null;
+        }
+        newBusiness.setId(id);
+        business = dtoToEntity(newBusiness);
+
+        return entitytoDto(businessRepository.save(business));
+
+    }
+
+    public void validateBusiness(RegisterBusiness business) {
         if (business.getName() == null || business.getName().isEmpty()) {
             throw new ResourceValidationException("El nombre de negocio es obligatorio");
         }
@@ -113,15 +130,6 @@ public class BusinessServiceImpl implements BusinessService {
         }
         if (business.getRuc() == null || business.getRuc().isEmpty()) {
             throw new ResourceValidationException("El RUC es obligatorio");
-        }
-        if (business.getPhone() == null || business.getPhone().isEmpty()) {
-            throw new ResourceValidationException("El teléfono es obligatorio");
-        }
-        if(business.getLogoSrc()==null || business.getLogoSrc().isEmpty()){
-            throw new ResourceValidationException("La imagen es obligatoria");
-        }
-        if(business.getBannerSrc()==null || business.getBannerSrc().isEmpty()){
-            throw new ResourceValidationException("La imagen es obligatoria");
         }
         if(business.getDescription()==null || business.getDescription().isEmpty()){
             throw new ResourceValidationException("La descripción es obligatoria");

@@ -32,9 +32,9 @@ public class Business {
     private String ruc;
     @Column(name = "phone", length = 9)
     private String phone;
-    @Column(name = "logo_src", length = 5000)
+    @Column(name = "logo_src")
     private String logoSrc;
-    @Column(name = "banner_src", length = 5000)
+    @Column(name = "banner_src")
     private String bannerSrc;
     @Column(name = "description", length = 2000, nullable = false)
     private String description;
@@ -45,13 +45,11 @@ public class Business {
     @Column(name = "comments_count")
     private Integer commentsCount;
 
-    // Es de la tabla Opening Hours
-    @Column(name = "start_time",nullable = false)
+    @Column(name = "start_time")
     private LocalDate startTime;
-    @Column(name = "end_time", nullable = false)
+    @Column(name = "end_time")
     private LocalDate endTime;
 
-    //Aqui faltaría cambiar owner por user (etiquetas)
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false, foreignKey = @ForeignKey(name = "FK_OWNER_ID"))
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
