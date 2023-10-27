@@ -37,12 +37,12 @@ public class Review {
     private LocalDate updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = false, foreignKey = @ForeignKey(name = "FK_REVIEW_USER"))
+    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "FK_REVIEW_USER"))
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "businessId", foreignKey = @ForeignKey(name = "FK_REVIEW_BUSINESS"))
+    @JoinColumn(name = "business_id", foreignKey = @ForeignKey(name = "FK_REVIEW_BUSINESS"))
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Business business;
 }

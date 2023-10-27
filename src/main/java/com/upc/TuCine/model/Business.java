@@ -40,6 +40,10 @@ public class Business {
     private String description;
     @Column(name = "address", length = 200, nullable = false)
     private String address;
+    @Column(name = "rating")
+    private Float rating;
+    @Column(name = "comments_count")
+    private Integer commentsCount;
 
     // Es de la tabla Opening Hours
     @Column(name = "start_time",nullable = false)

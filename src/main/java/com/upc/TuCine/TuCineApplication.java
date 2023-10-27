@@ -43,12 +43,10 @@ public class TuCineApplication {
         Dotenv dotenv = Dotenv.load();
 
         // Get value of variables
-		String databaseUrl = dotenv.get("DATABASE_URL");
 		String dataSourceUser = dotenv.get("DATASOURCE_USER");
         String dataSourcePassword = dotenv.get("DATASOURCE_PASSWORD");
 		
         // Create custom properties for app
-		System.setProperty("custom.database.url", databaseUrl);
         System.setProperty("custom.datasource.user", dataSourceUser);
 		System.setProperty("custom.datasource.password", dataSourcePassword);
 
