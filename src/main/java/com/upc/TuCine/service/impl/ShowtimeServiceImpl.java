@@ -1,6 +1,7 @@
 package com.upc.TuCine.service.impl;
 
 import com.upc.TuCine.dto.ShowtimeDto;
+import com.upc.TuCine.shared.exception.ResourceNotFoundException;
 import com.upc.TuCine.shared.exception.ResourceValidationException;
 import com.upc.TuCine.model.*;
 import com.upc.TuCine.repository.*;
@@ -20,6 +21,9 @@ public class ShowtimeServiceImpl implements ShowtimeService {
 
     @Autowired
     private AvailableFilmRepository availableFilmRepository;
+
+    @Autowired
+    private FilmRepository filmRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -101,6 +105,17 @@ public class ShowtimeServiceImpl implements ShowtimeService {
         }
         showtimeRepository.delete(showtimeToDelete);
         return EntityToDto(showtimeToDelete);
+    }
+
+    @Override
+    public List<ShowtimeDto> getShowtimesByFilmId(Integer filmId) {
+        List<Showtime> showtimes = showtimeRepository.findShowtimesByFilmId(filmId);
+
+        List<ShowtimeDto> showtimeDtos = showtimes.stream()
+                .map(this::EntityToDto)
+                .collect(Collectors.toList());
+
+        return showtimeDtos;
     }
 
     private void validateShowtime(ShowtimeDto showtime) {

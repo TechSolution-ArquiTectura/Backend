@@ -77,4 +77,18 @@ public class ShowtimeController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // URL: http://localhost:8080/api/TuCine/v1/films/{filmId}/showtimes
+    // Method: GET
+    @Transactional(readOnly = true)
+    @GetMapping("/films/{filmId}/showtimes")
+    public ResponseEntity<List<ShowtimeDto>> getShowtimesByFilmId(@PathVariable(value = "filmId") Integer filmId) {
+        List<ShowtimeDto> showtimes = showtimeService.getShowtimesByFilmId(filmId);
+
+        if (showtimes.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(showtimes, HttpStatus.OK);
+    }
+
 }

@@ -16,5 +16,7 @@ public interface ShowtimeService {
 
     ShowtimeDto deleteShowtime(Integer id);
 
+    List<ShowtimeDto> getShowtimesByFilmId(Integer filmId);
+
 
 }
