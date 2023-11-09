@@ -46,6 +46,16 @@ public class BusinessController {
         return new ResponseEntity<>(businessDto, HttpStatus.OK);
     }
 
+    @Transactional(readOnly = true)
+    @GetMapping("/business/{userId}")
+    public ResponseEntity<BusinessDto> getByUserId(@PathVariable(value = "userId") Integer userId) {
+        BusinessDto businessDto = businessService.getBusinessById(userId);
+        if (businessDto == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(businessDto, HttpStatus.OK);
+    }
+
 
     //URL: http://localhost:8080/api/TuCine/v1/businesses/{id}/businessTypes/{id}
     //Method: POST
