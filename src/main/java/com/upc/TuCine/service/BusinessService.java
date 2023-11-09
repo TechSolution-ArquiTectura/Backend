@@ -15,7 +15,7 @@ public interface BusinessService {
 
     BusinessDto getBusinessById(Integer id);
 
-    BusinessDto getByUserId(Integer userId);
+    BusinessDto getBusinessByUserId(Integer userId);
 
     //Get all business types from a business
     List<BusinessTypeDto> getAllBusinessTypesByBusinessId(Integer id);

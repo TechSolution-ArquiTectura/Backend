@@ -51,7 +51,7 @@ public class Business {
     private LocalDate endTime;
 
     @ManyToOne
-    @JoinColumn(name = "user_id",nullable = false, foreignKey = @ForeignKey(name = "FK_OWNER_ID"))
+    @JoinColumn(name = "user_id",nullable = false, foreignKey = @ForeignKey(name = "FK_BUSINESS_USER"))
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private User user;
 

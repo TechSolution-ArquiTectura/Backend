@@ -84,8 +84,11 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    public BusinessDto getByUserId(Integer userId){
+    public BusinessDto getBusinessByUserId(Integer userId){
         Business business = businessRepository.findByUserId(userId);
+        if (business == null) {
+            return null;
+        }
         return entitytoDto(business);
     }
 

@@ -46,14 +46,10 @@ public class BusinessController {
         return new ResponseEntity<>(businessDto, HttpStatus.OK);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @GetMapping("/business/{userId}")
-    public ResponseEntity<BusinessDto> getByUserId(@PathVariable(value = "userId") Integer userId) {
-        BusinessDto businessDto = businessService.getBusinessById(userId);
-        if (businessDto == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(businessDto, HttpStatus.OK);
+    public ResponseEntity<BusinessDto> getBusinessByUserId(@PathVariable(value = "userId") Integer userId) {
+        return new ResponseEntity<>(businessService.getBusinessByUserId(userId), HttpStatus.OK);
     }
 
 
