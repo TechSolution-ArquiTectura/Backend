@@ -52,6 +52,11 @@ public class BusinessController {
         return new ResponseEntity<>(businessService.getBusinessByUserId(userId), HttpStatus.OK);
     }
 
+    @Transactional
+    @GetMapping("/business/{name}")
+    public boolean existsBusinessByName(@PathVariable(value = "name") String name) {
+        return businessService.existsBusinessByName(name);
+    }
 
     //URL: http://localhost:8080/api/TuCine/v1/businesses/{id}/businessTypes/{id}
     //Method: POST

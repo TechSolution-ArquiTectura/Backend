@@ -17,6 +17,8 @@ public interface BusinessService {
 
     BusinessDto getBusinessByUserId(Integer userId);
 
+    boolean existsBusinessByName(String name);
+
     //Get all business types from a business
     List<BusinessTypeDto> getAllBusinessTypesByBusinessId(Integer id);
 
