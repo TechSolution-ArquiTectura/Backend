@@ -53,7 +53,7 @@ public class BusinessController {
     }
 
     @Transactional
-    @GetMapping("/business/{name}")
+    @GetMapping("/business/name/{name}")
     public boolean existsBusinessByName(@PathVariable(value = "name") String name) {
         return businessService.existsBusinessByName(name);
     }
