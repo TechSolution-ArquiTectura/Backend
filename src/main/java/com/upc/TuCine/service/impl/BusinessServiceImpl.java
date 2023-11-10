@@ -93,6 +93,11 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
+    public boolean existsBusinessByName(String name){
+        return businessRepository.existsBusinessByName(name);
+    }
+
+    @Override
     public List<BusinessTypeDto> getAllBusinessTypesByBusinessId(Integer id) {
         Business business = businessRepository.findById(id).orElse(null);
         if (business == null) {
