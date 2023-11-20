@@ -49,6 +49,14 @@ public class ShowtimeServiceImpl implements ShowtimeService {
     }
 
     @Override
+    public List<ShowtimeDto> getAllShowtimesByAvailableFilm(Integer id) {
+        List<Showtime> showtimes = showtimeRepository.findAllByAvailableFilmId(id);
+        return showtimes.stream()
+                .map(this::EntityToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public ShowtimeDto getShowtimeById(Integer id) {
         Showtime showtime = showtimeRepository.findById(id).orElse(null);
         if (showtime == null) {
