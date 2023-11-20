@@ -7,6 +7,7 @@ import java.util.List;
 public interface ShowtimeService {
 
     List<ShowtimeDto>getAllShowtimes();
+    List<ShowtimeDto>getAllShowtimesByAvailableFilm(Integer id);
 
     ShowtimeDto getShowtimeById(Integer id);
 

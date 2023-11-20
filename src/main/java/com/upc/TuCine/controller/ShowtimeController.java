@@ -42,6 +42,14 @@ public class ShowtimeController {
         return new ResponseEntity<>(showtimeDto, HttpStatus.OK);
     }
 
+    //URL: http://localhost:8080/api/TuCine/v1/showtimes/availableFilm/{availableFilmId}
+    //Method: GET
+    @Transactional(readOnly = true)
+    @GetMapping("/showtimes/availableFilm/{availableFilmId}")
+    public ResponseEntity<List<ShowtimeDto>> getShowtimesByAvailableFilm(@PathVariable(value = "availableFilmId") Integer id) {
+        return new ResponseEntity<>(showtimeService.getAllShowtimesByAvailableFilm(id), HttpStatus.OK);
+    }
+
 
     //URL: http://localhost:8080/api/TuCine/v1/showtimes
     //Method: POST
