@@ -47,7 +47,7 @@ public class BusinessController {
     }
 
     @Transactional
-    @GetMapping("/businesses/{userId}")
+    @GetMapping("/businesses/user/{userId}")
     public ResponseEntity<BusinessDto> getBusinessByUserId(@PathVariable(value = "userId") Integer userId) {
         return new ResponseEntity<>(businessService.getBusinessByUserId(userId), HttpStatus.OK);
     }
