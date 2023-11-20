@@ -29,6 +29,14 @@ public class AvailableFilmController {
         return new ResponseEntity<>(availableFilmService.getAllAvailableFilms(), HttpStatus.OK);
     }
 
+    //URL: http://localhost:8080/api/TuCine/v1/availableFilms/{businessId}
+    //Method: GET
+    @Transactional(readOnly = true)
+    @GetMapping("/availableFilms/{businessId}")
+    public ResponseEntity<List<AvailableFilmDto>> getAllAvailableFilmsByBusinessId(@PathVariable Integer businessId) {
+        return new ResponseEntity<>(availableFilmService.getAllAvailableFilmsByBusinessId(businessId), HttpStatus.OK);
+    }
+
     //URL: http://localhost:8080/api/TuCine/v1/availableFilms
     //Method: POST
     @Transactional

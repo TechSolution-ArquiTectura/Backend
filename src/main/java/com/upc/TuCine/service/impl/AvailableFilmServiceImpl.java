@@ -47,6 +47,14 @@ public class AvailableFilmServiceImpl implements AvailableFilmService {
     }
 
     @Override
+    public List<AvailableFilmDto> getAllAvailableFilmsByBusinessId(Integer id) {
+        List<AvailableFilm> availableFilms = availableFilmRepository.findAllByBusinessId(id);
+        return availableFilms.stream()
+                .map(this::EntityToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public AvailableFilmDto createAvailableFilm(AvailableFilmDto availableFilmDto) {
 
         validateAvailableFilm(availableFilmDto);
