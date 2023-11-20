@@ -47,13 +47,13 @@ public class BusinessController {
     }
 
     @Transactional
-    @GetMapping("/business/{userId}")
+    @GetMapping("/businesses/{userId}")
     public ResponseEntity<BusinessDto> getBusinessByUserId(@PathVariable(value = "userId") Integer userId) {
         return new ResponseEntity<>(businessService.getBusinessByUserId(userId), HttpStatus.OK);
     }
 
     @Transactional
-    @GetMapping("/business/{name}")
+    @GetMapping("/businesses/name/{name}")
     public boolean existsBusinessByName(@PathVariable(value = "name") String name) {
         return businessService.existsBusinessByName(name);
     }
