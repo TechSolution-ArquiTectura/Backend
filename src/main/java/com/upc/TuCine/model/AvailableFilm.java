@@ -22,12 +22,10 @@ public class AvailableFilm {
 
     @ManyToOne
     @JoinColumn(name = "business_id", nullable = false, foreignKey = @ForeignKey(name = "FK_AVAILABLEFILM_BUSINESS"))
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Business business;
 
     @ManyToOne
     @JoinColumn(name = "film_id", nullable = false, foreignKey = @ForeignKey(name = "FK_AVAILABLEFILM_FILM"))
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Film film;
 
     @Column(name = "custom_notice")
@@ -39,6 +37,5 @@ public class AvailableFilm {
 
     @ManyToOne
     @JoinColumn(name = "promotion_id", nullable = false, foreignKey = @ForeignKey(name = "FK_AVAILABLEFILM_PROMOTION"))
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Promotion promotion;
 }
