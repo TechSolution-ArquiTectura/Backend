@@ -36,6 +36,6 @@ public class AvailableFilm {
     private Character isAvailable;
 
     @ManyToOne
-    @JoinColumn(name = "promotion_id", nullable = false, foreignKey = @ForeignKey(name = "FK_AVAILABLEFILM_PROMOTION"))
+    @JoinColumn(name = "promotion_id", foreignKey = @ForeignKey(name = "FK_AVAILABLEFILM_PROMOTION"))
     private Promotion promotion;
 }

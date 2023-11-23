@@ -60,7 +60,7 @@ public class AvailableFilmServiceImpl implements AvailableFilmService {
         validateAvailableFilm(availableFilmDto);
         existsBusinessById(availableFilmDto.getBusiness().getId());
         existsFilmById(availableFilmDto.getFilm().getId());
-        existsPromotionById(availableFilmDto.getPromotion().getId());
+        //existsPromotionById(availableFilmDto.getPromotion().getId());
 
         Business business = businessRepository.findById(availableFilmDto.getBusiness().getId()).orElse(null);
         availableFilmDto.setBusiness(business);
@@ -68,7 +68,13 @@ public class AvailableFilmServiceImpl implements AvailableFilmService {
         Film film = filmRepository.findById(availableFilmDto.getFilm().getId()).orElse(null);
         availableFilmDto.setFilm(film);
 
-        Promotion promotion = promotionRepository.findById(availableFilmDto.getPromotion().getId()).orElse(null);
+        Promotion promotion;
+        try {
+            promotion = promotionRepository.findById(availableFilmDto.getPromotion().getId()).orElse(null);
+        } catch (Exception e) {
+            promotion = null;
+        }
+
         availableFilmDto.setPromotion(promotion);
 
         AvailableFilm availableFilm = DtoToEntity(availableFilmDto);
