@@ -1,6 +1,7 @@
 package com.upc.TuCine.controller;
 
 import com.upc.TuCine.dto.AvailableFilmDto;
+import com.upc.TuCine.dto.PromotionDto;
 import com.upc.TuCine.dto.ReviewDto;
 import com.upc.TuCine.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,17 @@ public class ReviewController {
     @GetMapping("/reviews/{businessId}")
     public ResponseEntity<List<ReviewDto>> getAllByBusinessId(@PathVariable(value = "businessId") Integer businessId) {
         return new ResponseEntity<>(reviewService.getReviewsByBusinessId(businessId), HttpStatus.OK);
+    }
+
+    // Delete review
+    @Transactional
+    @DeleteMapping("/reviews/{reviewId}")
+    public ResponseEntity<ReviewDto> deleteReview(@PathVariable(value = "reviewId") Integer reviewId) {
+        ReviewDto deletedReview = reviewService.deleteReview(reviewId);
+        if (deletedReview == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(deletedReview, HttpStatus.OK);
     }
 }

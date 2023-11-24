@@ -9,5 +9,5 @@ public interface ReviewService {
     List<ReviewDto> getReviewsByUserId(Integer userId);
     List<ReviewDto> getReviewsByBusinessId(Integer businessId);
     List<ReviewDto> getReviewsByUserIdAndBusinessId(Integer userId, Integer businessId);
-
+    ReviewDto deleteReview(Integer reviewId);
 }

@@ -1,7 +1,9 @@
 package com.upc.TuCine.service.impl;
 
+import com.upc.TuCine.dto.PromotionDto;
 import com.upc.TuCine.dto.ReviewDto;
 import com.upc.TuCine.model.Business;
+import com.upc.TuCine.model.Promotion;
 import com.upc.TuCine.model.Review;
 import com.upc.TuCine.repository.BusinessRepository;
 import com.upc.TuCine.repository.ReviewRepository;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,6 +68,35 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public ReviewDto deleteReview(Integer reviewId) {
+        Optional<Review> optionalReview = reviewRepository.findById(reviewId);
+
+        if (optionalReview.isPresent()) {
+            Review review = optionalReview.get();
+            Business businessToUpdate = review.getBusiness();
+
+            if (businessToUpdate != null) {
+                if (businessToUpdate.getCommentsCount() > 1) {
+                    Float newRating = ((businessToUpdate.getRating() * businessToUpdate.getCommentsCount()) - review.getRating()) / (businessToUpdate.getCommentsCount() - 1);
+                    businessToUpdate.setRating(newRating);
+                    businessToUpdate.setCommentsCount(businessToUpdate.getCommentsCount() - 1);
+                } else {
+                    businessToUpdate.setRating(0.0f);
+                    businessToUpdate.setCommentsCount(0);
+                }
+
+                businessRepository.save(businessToUpdate);
+            }
+
+            reviewRepository.delete(review);
+            return EntityToDto(review);
+        }
+
+        return null;
+    }
+
+
+    @Override
     public ReviewDto createReview(ReviewDto reviewDto) {
 
         validateReview(reviewDto);
@@ -103,4 +135,5 @@ public class ReviewServiceImpl implements ReviewService {
             throw new ResourceValidationException("El usuario no puede ser nulo");
         }
     }
+
 }
