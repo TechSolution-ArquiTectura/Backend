@@ -6,18 +6,16 @@ import com.upc.TuCine.security.resource.TypeUserDto;
 import com.upc.TuCine.user.resource.UserDto;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetailsService;
+
 
 import java.util.List;
 
-public interface UserService extends UserDetailsService {
+public interface UserService {
     //get
     List<UserDto> getAllUsers();
     UserDto getById(Integer userId);
 
     TypeUserDto getTypeUserById(Integer id);
 
-    //post, put, delete
-    ResponseEntity<?> authenticate(AuthenticateRequest request);
     ResponseEntity<?> register(RegisterRequest request);
 }

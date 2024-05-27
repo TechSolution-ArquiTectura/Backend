@@ -10,8 +10,6 @@ import com.upc.TuCine.security.domain.service.communication.AuthenticateRequest;
 import com.upc.TuCine.security.domain.service.communication.AuthenticateResponse;
 import com.upc.TuCine.security.domain.service.communication.RegisterRequest;
 import com.upc.TuCine.security.domain.service.communication.RegisterResponse;
-import com.upc.TuCine.security.middleware.JwtHandler;
-import com.upc.TuCine.security.middleware.UserDetailsImpl;
 import com.upc.TuCine.security.resource.AuthenticateDto;
 import com.upc.TuCine.security.resource.TypeUserDto;
 import com.upc.TuCine.shared.exception.ResourceNotFoundException;
@@ -26,14 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -55,25 +45,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private TypeUserRepository typeUserRepository;
     @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private JwtHandler handler;
-    @Autowired
-    private PasswordEncoder encoder;
-    @Autowired
     private EnhancedModelMapper enhancedMapper;
 
     private UserMapper mapper;
 
     UserServiceImpl(UserMapper userMapper) {
         this.mapper = userMapper;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("User not found with username: %s", email)));
-        return UserDetailsImpl.build(user);
     }
 
     @Override
@@ -84,51 +61,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getById(Integer userId) {
         return mapper.toResource(userRepository.findById(userId)
-                .orElseThrow(()-> new ResourceNotFoundException(ENTITY,userId)));
+                .orElseThrow(() -> new ResourceNotFoundException(ENTITY, userId)));
     }
 
     @Override
-    public ResponseEntity<?> authenticate(AuthenticateRequest request) {
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getEmail(), request.getPassword()
-                    ));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            String token = handler.generateToken(authentication);
-
-            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-            List<String> roles = userDetails.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .collect(Collectors.toList());
-
-            AuthenticateDto resource = enhancedMapper.map(userDetails, AuthenticateDto.class);
-            resource.setTypeUsers(roles);
-            resource.setToken(token);
-
-            AuthenticateResponse response = new AuthenticateResponse(resource);
-
-            return ResponseEntity.ok(response.getResource());
-
-
-        } catch (Exception e) {
-            AuthenticateResponse response = new AuthenticateResponse(String.format("An error occurred while authenticating: %s", e.getMessage()));
-            return ResponseEntity.badRequest().body(response.getMessage());
+    public TypeUserDto getTypeUserById(Integer id) {
+        User person = userRepository.findById(id).orElse(null);
+        if (person == null) {
+            return null;
         }
+        return enhancedMapper.map(person.getTypeUser(), TypeUserDto.class);
     }
 
     @Override
     public ResponseEntity<?> register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            AuthenticateResponse response = new AuthenticateResponse("Email is already used.");
-            return ResponseEntity.badRequest()
-                    .body(response.getMessage());
+            return ResponseEntity.badRequest().body("Email is already used.");
         }
         if (userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
-            AuthenticateResponse response = new AuthenticateResponse("Phone number is already used.");
-            return ResponseEntity.badRequest()
-                    .body(response.getMessage());
+            return ResponseEntity.badRequest().body("Phone number is already used.");
         }
 
         try {
@@ -169,28 +120,19 @@ public class UserServiceImpl implements UserService {
                     .withBirthdate(request.getBirthdate())
                     .withEmail(request.getEmail())
                     .withEmailVerified(currentDate)
-                    .withPassword(encoder.encode(request.getPassword()))
+                    .withPassword(request.getPassword()) // No encoding since no security is used
                     .withPhoneNumber(request.getPhoneNumber())
                     .withGender(genders.iterator().next())
                     .withTypeUser(roles.iterator().next());
 
             userRepository.save(user);
             UserDto resource = enhancedMapper.map(user, UserDto.class);
-            RegisterResponse response = new RegisterResponse(resource);
-            return ResponseEntity.ok(response.getResource());
+            return ResponseEntity.ok(resource);
 
         } catch (Exception e) {
-            RegisterResponse response = new RegisterResponse(e.getMessage());
-            return ResponseEntity.badRequest().body(response.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @Override
-    public TypeUserDto getTypeUserById(Integer id) {
-        User person = userRepository.findById(id).orElse(null);
-        if (person == null) {
-            return null;
-        }
-        return enhancedMapper.map(person.getTypeUser(), TypeUserDto.class);
-    }
+
 }

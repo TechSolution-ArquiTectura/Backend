@@ -44,13 +44,6 @@ public class UserController {
         return new ResponseEntity<>(userService.getById(userId), HttpStatus.OK);
     }
 
-    //URL: http://localhost:8080/api/TuCine/v1/users/auth/sign-in
-    //Method: POST
-    @PostMapping("/auth/sign-in")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody AuthenticateRequest request) {
-        return userService.authenticate(request);
-    }
-
     //URL: http://localhost:8080/api/TuCine/v1/users/auth/sign-up
     //Method: POST
     @PostMapping("/auth/sign-up")
