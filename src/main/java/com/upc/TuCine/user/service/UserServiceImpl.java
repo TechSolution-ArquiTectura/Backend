@@ -134,5 +134,23 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public ResponseEntity<?> authenticate(AuthenticateRequest request) {
+        try{
+            User user = userRepository.findByEmail(request.getEmail())
+                    .orElseThrow(() -> new RuntimeException("Email not found."));
+
+            if (!user.getPassword().equals(request.getPassword())) {
+                return ResponseEntity.badRequest().body("Invalid password.");
+            }
+
+            AuthenticateDto resource = enhancedMapper.map(user, AuthenticateDto.class);
+            return ResponseEntity.ok(resource);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
 }
