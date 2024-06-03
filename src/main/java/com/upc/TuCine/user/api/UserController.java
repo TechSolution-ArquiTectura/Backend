@@ -51,6 +51,12 @@ public class UserController {
         return userService.register(request);
     }
 
+    //URL: http://localhost:8080/api/TuCine/v1/users/auth/sign-in
+    @PostMapping("/auth/sign-in")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody AuthenticateRequest request) {
+        return userService.authenticate(request);
+    }
+
     //URL: http://localhost:8080/api/TuCine/v1/users/{id}/typeUser
     //Method: GET
     @Transactional(readOnly = true)
@@ -62,4 +68,5 @@ public class UserController {
         }
         return new ResponseEntity<>(typeUserDto, HttpStatus.OK);
     }
+
 }

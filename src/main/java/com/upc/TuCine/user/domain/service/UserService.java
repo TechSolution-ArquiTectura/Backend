@@ -18,4 +18,7 @@ public interface UserService {
     TypeUserDto getTypeUserById(Integer id);
 
     ResponseEntity<?> register(RegisterRequest request);
+
+
+    ResponseEntity<?> authenticate(AuthenticateRequest request);
 }
