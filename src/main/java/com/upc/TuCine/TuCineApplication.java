@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 @OpenAPIDefinition(info = @Info(title = "API TuCine", version = "1.0", description = "API para gestionar la aplicación web TuCine", contact = @Contact(name = "TuCine", email = "tucine@gmail.com"), license = @License(name = "Apache 2.0", url = "http://www.apache.org/licenses/LICENSE-2.0.html")), servers = {
-		@Server(url = "http://localhost:8080")
+		@Server(url = "https://tucineapirest.azurewebsites.net")
 })
 @EnableJpaAuditing
 public class TuCineApplication {
